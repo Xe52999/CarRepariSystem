@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.shu.carsystem.mapper.RepairMapper">
-
+    <!-- List<Vehicle> getListByUId(Integer id); -->
+    <resultMap id="RepairMap" type="Repair">
+        <id property="repairId" column="repair_id"></id>
+        <result property="type" column="type"></result>
+        <result property="classification" column="classification"></result>
+        <result property="payment" column="payment"></result>
+        <result property="mile" column="mile"></result>
+        <result property="fuel" column="fuel"></result>
+        <result property="approach_time" column="approach_time"></result>
+        <result property="failure" column="failure"></result>
+        <result property="ddl" column="ddl"></result>
+        <result property="cost" column="cost"></result>
+        <result property="userId" column="user_id"></result>
+        <result property="vehicleId" column="vehicle_id"></result>
+    </resultMap>
+    <select id="getListByUID" resultMap="RepairMap">
+        select * from "repair"
+        <where>
+            user _id = #{id};
+        </where>
+    </select>
 
 </mapper>

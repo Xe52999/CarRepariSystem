@@ -18,7 +18,8 @@ public class Repair {
     private String payment;
     private Double mile;
     private Double fuel;
-    private Time approachTime;
+    private String approachTime;
     private String failure;
-    private Time ddl;
+    private String ddl;
+    private Integer cost;
 }

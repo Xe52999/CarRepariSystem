@@ -15,9 +15,14 @@ public enum ResultEnum {
     UPDATE_ERROR(456,"更新失败"),
     UPDATE_SUCCESS(457,"更新成功"),
     DELETE_ERROR(333,"删除失败"),
-    DELETE_SUCCESS(334,"删除成功")
+    DELETE_SUCCESS(334,"删除成功"),
+    VEHICLE_DATA(500,"车辆数据传输"),
+    REPAIR_DATA(501,"维修信息传输"),
+    USER_DATA(502,"用户信息传输"),
+    CLIENT_DATA(503,"客户信息传输");
 
-    ;
+
+
     private Integer code;
     private String msg;
 

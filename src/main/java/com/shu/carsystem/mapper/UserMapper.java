@@ -9,4 +9,6 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
     User inquireUser(User user);
+
+    User inquireUserById(Integer id);
 }

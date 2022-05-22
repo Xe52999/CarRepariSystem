@@ -15,6 +15,6 @@ public class Vehicle {
     private String color;
     private String type;
     private String category;        // 注意：和 sql 里 class 字段不对应
-    private Double discount;
     private String vin;
+    private Integer clientId;
 }

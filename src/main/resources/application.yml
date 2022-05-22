@@ -14,7 +14,7 @@ spring:
       filter:
         enabled: true
 
-    interceptor:
+
 
 
 # mybatis??

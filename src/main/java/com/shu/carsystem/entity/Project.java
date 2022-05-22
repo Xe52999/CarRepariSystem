@@ -12,5 +12,4 @@ import lombok.ToString;
 public class Project {
     private Integer proId;
     private String name;
-
 }

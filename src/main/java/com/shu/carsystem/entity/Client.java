@@ -16,6 +16,6 @@ public class Client {
     private Double discount;
     private String contact;
     private String phone;
-    private String clientId2;
+    private Integer clientId2;
     private String password;
 }
