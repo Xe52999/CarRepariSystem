@@ -6,5 +6,5 @@ import com.shu.carsystem.entity.User;
 public interface UserService {
     Result[] inquire(User user);
 
-    Result inquireById(Integer id);
+    Result inquireByName(String id);
 }

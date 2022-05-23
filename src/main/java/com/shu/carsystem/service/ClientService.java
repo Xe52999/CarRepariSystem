@@ -1,9 +1,11 @@
 package com.shu.carsystem.service;
 
+import com.shu.carsystem.common.Result;
 import com.shu.carsystem.entity.Client;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface ClientService {
@@ -14,4 +16,6 @@ public interface ClientService {
     int updatePasswordById(Integer id, String password);
 
     int updateInfoById(Integer id, String name, String nature, String contact, String phone);
+
+    Result addClientInfo(Map<String, Object> map);
 }

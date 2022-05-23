@@ -16,7 +16,6 @@ public class User {
     private String name;
     private String password;
     private String phone;
-    private Integer isAdmin;
     private Integer isRepairman;
 
     public User(Integer userId, String password) {

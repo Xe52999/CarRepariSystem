@@ -24,13 +24,14 @@ public class UserServiceImpl implements UserService {
     public Result[] inquire(User user) {
         User user1 = userMapper.inquireUser(user);
         Result[] ret = new Result[2];
-        System.out.println(user1);
         if(user1 == null){
 
             Client client = new Client();
-            client.setClientId2(user.getUserId());
+            client.setClientId2(user.getName());
             client.setPassword(user.getPassword());
+            System.out.println(client);
             Client client1 = clientMapper.inquireClient(client);
+            System.out.println(client1);
             if(client1 == null) {
                 ret[0] = Result.create(ResultEnum.USER_NOT_EXIST,null);
                 return ret;
@@ -47,11 +48,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Result inquireById(Integer id) {
+    public Result inquireByName(String id) {
         // 不传数据只传结果
-        User user = userMapper.inquireUserById(id);
+        User user = userMapper.inquireUserByName(id);
         if(user == null){
-            Client client = clientMapper.inquireClientById(id);
+            Client client = clientMapper.inquireClientByName(id);
             if(client == null) return Result.create(ResultEnum.USER_NOT_EXIST, null);
             return Result.create(ResultEnum.USER_IS_EXISTS, null);
         }

@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface ClientMapper {
     Client inquireClient(Client client);
 
-    Client inquireClientById(Integer id);
+    Client inquireClientByName(String id);
 
     int insertClient(Client client);
 

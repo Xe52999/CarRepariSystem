@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -35,11 +36,11 @@ public class UserController {
     @Autowired
     private ClientService clientService;
 
-    @GetMapping("/login/{name}/{password}")
-    private Result[] userLogin(@PathVariable("name") String name, @PathVariable("password") String password, HttpSession httpSession)
+    @GetMapping("/login/{username}/{password}")
+    private Result[] userLogin(@PathVariable("username") String username, @PathVariable("password") String password, HttpSession httpSession)
     {
         User user = new User();
-        user.setName(name);
+        user.setName(username);
         user.setPassword(password);
         Result[] result = userService.inquire(user);
         if(result[0].getData() == null){
@@ -47,7 +48,6 @@ public class UserController {
             ret[0] = Result.create(ResultEnum.USER_NOT_EXIST,null);
             return ret;
         }
-
         Result[] dataReturn;
         if(result[1].getData().equals("Client")){
             Client client = (Client) result[0].getData();
@@ -63,11 +63,6 @@ public class UserController {
         else{
             user = (User) result[0].getData();
             dataReturn = new Result[1];
-            if(user.getIsAdmin() == 1){
-                /*
-                    未完成：获取对应数据（所以获取什么数据？）
-                 */
-            }
             if(user.getIsRepairman() == 1){
                 /*
                     未完成：获取对应数据
@@ -83,8 +78,8 @@ public class UserController {
     private Result userRegistry(@RequestBody Client client){
         // 客户注册功能
         // 获取账号和密码，首先判断账号是否已存在，账号存在则返回用户已存在，否则返回插入成功
-        System.out.println(client.getClientId2());
-        Result result = userService.inquireById(client.getClientId2());
+        System.out.println(client);
+        Result result = userService.inquireByName(client.getClientId2());
         //数据库存在相同的账号就返回账号已存在
         if(result.getCode() == ResultEnum.USER_IS_EXISTS.getCode()){
             return Result.create(ResultEnum.USER_IS_EXISTS,null);

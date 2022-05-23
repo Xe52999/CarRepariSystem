@@ -14,15 +14,15 @@
    <select id="inquireUser" resultMap="UserMap">
         select * from "user"
         <where>
-            user_id = #{userId} and password = #{password};
+            name = #{name} and password = #{password};
         </where>
-  </select>
+   </select>
 
-    <!-- User inquireUserById(Integer id); -->
-    <select id="inquireUserById" resultMap="UserMap">
+    <!-- User inquireUserByName(String id); -->
+    <select id="inquireUserByName" resultMap="UserMap">
         select * from "user"
         <where>
-            user_id = #{id};
+            name = #{id};
         </where>
     </select>
 </mapper>

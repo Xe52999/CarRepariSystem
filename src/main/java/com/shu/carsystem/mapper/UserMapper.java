@@ -10,5 +10,5 @@ import java.util.List;
 public interface UserMapper {
     User inquireUser(User user);
 
-    User inquireUserById(Integer id);
+    User inquireUserByName(String id);
 }

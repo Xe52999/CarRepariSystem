@@ -23,8 +23,8 @@
 
 
 
-    <!-- Client inquireClientById(Integer id); -->
-    <select id="inquireClientById" resultMap="ClientMap">
+    <!-- Client inquireClientByName(String id); -->
+    <select id="inquireClientByName" resultMap="ClientMap">
         select * from "client"
         <where>
             client_id2 = #{id};

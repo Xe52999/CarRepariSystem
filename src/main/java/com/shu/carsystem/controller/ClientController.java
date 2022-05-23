@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/client")
 public class ClientController {
@@ -28,9 +29,7 @@ public class ClientController {
             // 更改密码，传来的参数为clientId和password，根据id去更新client表中的密码。查到则返回新密码和成功信息、否则返回未知错误
             Integer clientId =(Integer) map.get("client_id");
             String password = (String) map.get("password");
-            System.out.println(clientId);
             cnt = clientService.updatePasswordById(clientId, password);
-            System.out.println(cnt);
             return (cnt == 1) ? Result.create(ResultEnum.SUCCESS, password) : Result.create(ResultEnum.UNKNOWN_ERROR, null);
         }
         else{
@@ -52,17 +51,8 @@ public class ClientController {
         }
     }
 
-//    @PostMapping
-//    private Result addClientInfo(@RequestBody Map<String , Object> map){
-//        int cnt = 0;
-//        if(map.containsKey("vin")){
-//            //新增车辆，
-//        }
-//        else if(){
-//
-//        }
-//        else{
-//
-//        }
-//    }
+    @PostMapping
+    private Result addClientInfo(@RequestBody Map<String , Object> map){
+        return clientService.addClientInfo(map);
+    }
 }
