@@ -16,6 +16,7 @@
         <result property="userId" column="user_id"></result>
         <result property="vehicleId" column="vehicle_id"></result>
     </resultMap>
+    <!-- List<Repair> getListByUId(Integer id); -->
     <select id="getListByUID" resultMap="RepairMap">
         select * from "repair"
         <where>
@@ -23,4 +24,16 @@
         </where>
     </select>
 
+    <!-- Repair getRepairByVehicleId(Integer vehicleId); -->
+    <select id="getRepairByVehicleId" resultType="Repair">
+        select * from repair where vehicle_id = #{vehicleId};
+    </select>
+
+    <!-- int insertClientRepair(Repair repair); -->
+    <insert id="insertClientRepair" useGeneratedKeys="true" keyProperty="repairId">
+        <selectKey keyProperty="repairId" resultType="Integer" order="BEFORE">
+            select (select max(repair_id) from repair)+1 as repair_id;
+        </selectKey>
+        insert into "repair" values (#{repairId},#{type},#{classification},#{payment},#{mile},#{fuel},#{approachTime},#{failure},#{ddl},#{cost},#{userId},#{vehicleId})
+    </insert>
 </mapper>

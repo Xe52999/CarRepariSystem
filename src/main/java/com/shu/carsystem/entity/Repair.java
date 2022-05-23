@@ -22,4 +22,6 @@ public class Repair {
     private String failure;
     private String ddl;
     private Integer cost;
+    private Integer userId;
+    private Integer vehicleId;
 }

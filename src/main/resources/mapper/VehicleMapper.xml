@@ -18,4 +18,21 @@
             </where>
     </select>
 
+    <!--int containLicenseOrVin(String License, String Vin); -->
+    <select id="containLicenseOrVin" resultType="Integer">
+        select count(vehicle_id) from vehicle where license = #{License} or vin = #{Vin};
+    </select>
+
+    <!-- int insertVehicle(Vehicle vehicle); -->
+    <insert id="insertVehicle" useGeneratedKeys="true" keyProperty="vehicleId">
+        <selectKey keyProperty="vehicleId" resultType="int" order="BEFORE">
+            select (select max(vehicle_id) from vehicle)+1 as vehicle_id;
+        </selectKey>
+        insert into vehicle values (#{vehicleId},#{license},#{color},#{type},#{category},#{clientId},#{vin});
+    </insert>
+
+    <!-- int getVidByVin(String vin); -->
+    <select id="getVidByVin" resultType="Integer">
+        select vehicle_id from vehicle where vin = #{vin};
+    </select>
 </mapper>

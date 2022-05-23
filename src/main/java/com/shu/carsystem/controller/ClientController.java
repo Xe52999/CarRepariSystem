@@ -52,6 +52,7 @@ public class ClientController {
     }
 
     @PostMapping
+    //客户新增信息（新增绑定车辆/新增维修业务）
     private Result addClientInfo(@RequestBody Map<String , Object> map){
         return clientService.addClientInfo(map);
     }

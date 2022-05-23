@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface VehicleService {
     List<Vehicle> getListByCId(Integer id);
+
+
 }

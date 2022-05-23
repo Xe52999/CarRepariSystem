@@ -9,4 +9,10 @@ import java.util.List;
 public interface VehicleMapper {
     //根据Client_id获取车辆信息
     List<Vehicle> getListByCId(Integer id);
+
+    int containLicenseOrVin(String License,String Vin);
+
+    int insertVehicle(Vehicle vehicle);
+
+    int getVidByVin(String vin);
 }
