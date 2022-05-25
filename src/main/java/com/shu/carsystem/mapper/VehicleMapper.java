@@ -2,6 +2,7 @@ package com.shu.carsystem.mapper;
 
 import com.shu.carsystem.entity.Vehicle;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -15,4 +16,7 @@ public interface VehicleMapper {
     int insertVehicle(Vehicle vehicle);
 
     int getVidByVin(String vin);
+
+    Vehicle getVehicleByVehicleId(@Param("vehicleId") Integer vehicleId);
+
 }

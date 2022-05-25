@@ -6,7 +6,11 @@ import com.github.pagehelper.PageInfo;
 import com.shu.carsystem.common.Result;
 import com.shu.carsystem.common.ResultEnum;
 import com.shu.carsystem.entity.Repair;
+import com.shu.carsystem.entity.User;
+import com.shu.carsystem.entity.Vehicle;
 import com.shu.carsystem.mapper.RepairMapper;
+import com.shu.carsystem.mapper.UserMapper;
+import com.shu.carsystem.mapper.VehicleMapper;
 import com.shu.carsystem.service.RepairService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +21,11 @@ import java.util.List;
 public class RepairServiceImpl implements RepairService {
     @Autowired
     private RepairMapper repairMapper;
+
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private VehicleMapper vehicleMapper;
 
     @Override
     public List<Repair> getListByUId(Integer id) {
@@ -56,6 +65,11 @@ public class RepairServiceImpl implements RepairService {
         /**
          * 更新之前 要先判断，userId vechiledId maintainId 是否存在，若不存在则说明，非法，不予更新，并且返回错位信息
          */
+        User user = userMapper.inqurieUserByUserId(userId);
+        if(user == null) return Result.create(ResultEnum.USER_NOT_EXIST,userId);
+        Vehicle vehicle = vehicleMapper.getVehicleByVehicleId(repair.getVehicleId());
+        if(vehicle == null) return Result.create(ResultEnum.Vehicle_NOT_EXISTS,repair.getVehicleId());
+
         int i = repairMapper.updateRepair(repair);//更新
         if(i==0) return Result.create(ResultEnum.UPDATE_ERROR,repair);
         else return Result.create(ResultEnum.UPDATE_SUCCESS,repair);

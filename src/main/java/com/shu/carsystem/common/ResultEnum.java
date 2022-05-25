@@ -9,6 +9,7 @@ public enum ResultEnum {
     DATA_IS_NULL(3,"数据为空"),
     USER_NOT_LOGIN(4,"用户未登录"),
     BAD_FORMAT(5,"格式错误"),
+    Vehicle_NOT_EXISTS(6,"车辆不存在"),
     SUCCESS(200,"成功"),
     INSERT_ERROR(444,"插入失败"),
     INSERT_SUCCESS(454,"插入成功"),

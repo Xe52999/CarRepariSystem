@@ -25,4 +25,10 @@
             name = #{id};
         </where>
     </select>
+
+
+    <!--    User inqurieUserByUserId(@Param("UserId") Integer userId);-->
+    <select id="inqurieUserByUserId" resultType="User">
+        select * from "user" where user_id = #{UserId}
+    </select>
 </mapper>
