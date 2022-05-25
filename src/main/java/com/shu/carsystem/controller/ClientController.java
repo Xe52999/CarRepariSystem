@@ -57,18 +57,24 @@ public class ClientController {
         return clientService.addClientInfo(map);
     }
 
-    @GetMapping("/ongoing/{clientId}/{pageNo}/{pageSize}}")
+    @GetMapping("/ongoing/{clientId}/{pageNo}/{pageSize}/{keyWord}")
     //客户查看自己进行中的历史委托记录
+    //注意需要存在模糊查询功能
     private Result queryOngoingHistory(@PathVariable Integer clientId,
                                        @PathVariable Integer pageNo,
-                                       @PathVariable Integer pageSize)
+                                       @PathVariable Integer pageSize,
+                                       @PathVariable String keyWord)
     {
-        return clientService.queryOngoingHistory(clientId, pageNo, pageSize);
+        return clientService.queryOngoingHistory(clientId, pageNo, pageSize, keyWord);
     }
 
-//    @GetMapping("/finished/{clientId}/{pageNo}/{pageSize}}")
-//    //客户查看自己进行中的历史委托记录
-//    private Result queryFinishedHistory(){
-//        return Result.create(ResultEnum.UNKNOWN_ERROR,null);
-//    }
+    @GetMapping("/finished/{clientId}/{pageNo}/{pageSize}/{keyWord}")
+    //客户查看自己进行中的历史委托记录
+    private Result queryFinishedHistory(@PathVariable Integer clientId,
+                                        @PathVariable Integer pageNo,
+                                        @PathVariable Integer pageSize,
+                                        @PathVariable String keyWord)
+    {
+        return clientService.queryFinishedHistory(clientId, pageNo, pageSize, keyWord);
+    }
 }

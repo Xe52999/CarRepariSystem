@@ -20,7 +20,7 @@
 
     <!--int containLicenseOrVin(String License, String Vin); -->
     <select id="containLicenseOrVin" resultType="Integer">
-        select count(vehicle_id) from vehicle where license = #{License} or vin = #{Vin};
+        select count(*) from vehicle where license = #{License} or vin = #{Vin};
     </select>
 
     <!-- int insertVehicle(Vehicle vehicle); -->
@@ -31,8 +31,8 @@
         insert into vehicle values (#{vehicleId},#{license},#{color},#{type},#{category},#{clientId},#{vin});
     </insert>
 
-    <!-- int getVidByVin(String vin); -->
-    <select id="getVidByVin" resultType="Integer">
+    <!-- Object getVidByVin(String vin); -->
+    <select id="getVidByVin" resultType="Object">
         select vehicle_id from vehicle where vin = #{vin};
     </select>
 </mapper>

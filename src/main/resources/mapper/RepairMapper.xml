@@ -9,7 +9,7 @@
         <result property="payment" column="payment"></result>
         <result property="mile" column="mile"></result>
         <result property="fuel" column="fuel"></result>
-        <result property="approach_time" column="approach_time"></result>
+        <result property="approachTime" column="approach_time"></result>
         <result property="failure" column="failure"></result>
         <result property="ddl" column="ddl"></result>
         <result property="cost" column="cost"></result>
@@ -37,6 +37,38 @@
         <selectKey keyProperty="repairId" resultType="Integer" order="BEFORE">
             select (select max(repair_id) from repair)+1 as repair_id;
         </selectKey>
-        insert into "repair" values (#{repairId},#{type},#{classification},#{payment},#{mile},#{fuel},#{approachTime},#{failure},#{ddl},#{cost},#{userId},#{vehicleId},#{hour},#{maintainerId},#{statu})
+        insert into "repair" values (#{repairId},#{type},#{classification},#{payment},#{mile},#{fuel},#{approachTime},#{failure},#{ddl},#{cost},#{userId},#{vehicleId},#{hour},#{maintainerId})
     </insert>
+
+    <!-- List<ClientRecord> queryClientHistoryRecord(@Param("clientId") int clientId, @Param("keyWord") String keyWord); -->
+    <resultMap id="clientRecord" type="com.shu.carsystem.pojo.ClientRecord">
+        <result property="repairId" column="repair_id"></result>
+        <result property="vin" column="vin"></result>
+        <result property="license" column="license"></result>
+        <result property="category" column="class"></result>
+        <result property="approachTime" column="approach_time"></result>
+        <result property="failure" column="failure"></result>
+        <result property="ddl" column="ddl"></result>
+        <result property="statu" column="statu"></result>
+    </resultMap>
+    <select id="queryClientHistoryRecord" resultMap="clientRecord">
+        select * from repair, vehicle, client
+        <where>
+            repair.vehicle_id = vehicle.vehicle_id and vehicle.client_id = client.client_id and statu != '已完成' and client.client_id = #{clientId}
+            <if test = "keyWord != '' and keyWord != 'null'">
+                and (repair_id like '%${keyWord}%' or vehicle.vin like '%${keyWord}%' or vehicle.license like '%${keyWord}%' or vehicle.class like '%${keyWord}%' or repair.failure like '%${keyWord}%' or repair.ddl like '%${keyWord}%' or repair.statu like '%${keyWord}%' or approach_time like '%${keyWord}%')
+            </if>
+        </where>
+    </select>
+
+    <!-- List<ClientRecord> queryClientFinishedRecord(@Param("clientId") int clientId, @Param("keyWord") String keyWord); -->
+    <select id="queryClientFinishedRecord" resultMap="clientRecord">
+        select * from repair, vehicle, client
+        <where>
+            repair.vehicle_id = vehicle.vehicle_id and vehicle.client_id = client.client_id and statu = '已完成' and client.client_id = #{clientId}
+            <if test = "keyWord != '' and keyWord != 'null'">
+                and (repair_id like '%${keyWord}%' or vehicle.vin like '%${keyWord}%' or vehicle.license like '%${keyWord}%' or vehicle.class like '%${keyWord}%' or repair.failure like '%${keyWord}%' or repair.ddl like '%${keyWord}%' or repair.statu like '%${keyWord}%' or approach_time like '%${keyWord}%' or ddl like '%${keyWord}%')
+            </if>
+        </where>
+    </select>
 </mapper>

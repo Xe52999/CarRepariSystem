@@ -19,5 +19,7 @@ public interface ClientService {
 
     Result addClientInfo(Map<String, Object> map);
 
-    Result queryOngoingHistory(Integer clientId, Integer pageNo, Integer pageSize);
+    Result queryOngoingHistory(Integer clientId, Integer pageNo, Integer pageSize, String keyWord);
+
+    Result queryFinishedHistory(Integer clientId, Integer pageNo, Integer pageSize, String keyWord);
 }

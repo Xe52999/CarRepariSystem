@@ -25,6 +25,6 @@ public class Repair {
     private Integer userId;
     private Integer vehicleId;
     private Double hour;
-    private Integer maintainId;
-    private String statu;
+    private Integer maintainerId;
+    private String statu = "等待派单";
 }

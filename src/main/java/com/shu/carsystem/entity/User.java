@@ -17,6 +17,7 @@ public class User {
     private String password;
     private String phone;
     private Integer isRepairman;
+    private String statu;
 
     public User(Integer userId, String password) {
         this.userId = userId;

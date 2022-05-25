@@ -14,10 +14,6 @@ public class ClientRecord {
     private String category;
     private String failure;
     private String ddl;
-    private Integer cost;
-    private Integer userId;
-    private Integer vehicleId;
-    private Double hour;
-    private Integer maintainId;
     private String statu;
+    private String approachTime;
 }
