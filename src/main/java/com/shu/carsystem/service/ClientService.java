@@ -18,4 +18,6 @@ public interface ClientService {
     int updateInfoById(Integer id, String name, String nature, String contact, String phone);
 
     Result addClientInfo(Map<String, Object> map);
+
+    Result queryOngoingHistory(Integer clientId, Integer pageNo, Integer pageSize);
 }

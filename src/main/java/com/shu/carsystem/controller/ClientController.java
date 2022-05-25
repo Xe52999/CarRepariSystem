@@ -27,14 +27,14 @@ public class ClientController {
         int cnt = 0;
         if(map.containsKey("password")){
             // 更改密码，传来的参数为clientId和password，根据id去更新client表中的密码。查到则返回新密码和成功信息、否则返回未知错误
-            Integer clientId =(Integer) map.get("client_id");
+            Integer clientId =(Integer) map.get("clientId");
             String password = (String) map.get("password");
             cnt = clientService.updatePasswordById(clientId, password);
             return (cnt == 1) ? Result.create(ResultEnum.SUCCESS, password) : Result.create(ResultEnum.UNKNOWN_ERROR, null);
         }
         else{
             // 更改个人信息，传来的参数为clientId、name、nature、contact、phone
-            Integer clientId =(Integer) map.get("client_id");
+            Integer clientId =(Integer) map.get("clientId");
             String name = (String) map.get("name");
             String nature = (String) map.get("nature");
             String contact = (String) map.get("contact");
@@ -56,4 +56,19 @@ public class ClientController {
     private Result addClientInfo(@RequestBody Map<String , Object> map){
         return clientService.addClientInfo(map);
     }
+
+    @GetMapping("/ongoing/{clientId}/{pageNo}/{pageSize}}")
+    //客户查看自己进行中的历史委托记录
+    private Result queryOngoingHistory(@PathVariable Integer clientId,
+                                       @PathVariable Integer pageNo,
+                                       @PathVariable Integer pageSize)
+    {
+        return clientService.queryOngoingHistory(clientId, pageNo, pageSize);
+    }
+
+//    @GetMapping("/finished/{clientId}/{pageNo}/{pageSize}}")
+//    //客户查看自己进行中的历史委托记录
+//    private Result queryFinishedHistory(){
+//        return Result.create(ResultEnum.UNKNOWN_ERROR,null);
+//    }
 }

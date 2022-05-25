@@ -69,7 +69,7 @@ public class ClientServiceImpl implements ClientService {
                 return Result.create(ResultEnum.USER_IS_EXISTS,null);
             }
             if(!((String) map.get("license")).matches(regex))
-                return Result.create(ResultEnum.BAD_FORMAT,null);
+                return Result.create(ResultEnum.BAD_FORMAT,(String) map.get("license"));
             //完全符合规则，需要将该车辆插入至Vehicle表中。
             Vehicle vehicle = new Vehicle();
             vehicle.setClientId((Integer) map.get("clientId"));
@@ -84,7 +84,7 @@ public class ClientServiceImpl implements ClientService {
         }
         else{
             //请求参数包含粗略故障，说明是新增客户委托
-            //判断大致分为：是否存在对应车架号？时间是否满足格式需求？该车架号是否已登陆过维修？
+            //判断大致分为：是否存在对应车架号？该车架号是否已登陆过维修？
             String vin =(String) map.get("vin");
             Integer vehicleId = vehicleMapper.getVidByVin(vin);
             if(vehicleMapper.containLicenseOrVin(null, vin) == 0) return Result.create(ResultEnum.USER_NOT_EXIST,null);
@@ -96,12 +96,19 @@ public class ClientServiceImpl implements ClientService {
             Double fuel = ((Double) map.get("fuel"))/100;
             repair.setFuel(Double.parseDouble(String.format("%.2f",fuel).toString()));
             repair.setMile((Double) map.get("mile"));
-            String approachTime = ((String) map.get("YMD"))+" "+((String) map.get("HMS"));
+            String approachTime = ((String) map.get("approach_date"))+" "+((String) map.get("approach_time"));
             repair.setApproachTime(approachTime);
 
             cnt = repairMapper.insertClientRepair(repair);
             if(cnt == 0) return Result.create(ResultEnum.UNKNOWN_ERROR,null);
             return Result.create(ResultEnum.INSERT_SUCCESS,repair);
         }
+    }
+
+    @Override
+    public Result queryOngoingHistory(Integer clientId, Integer pageNo, Integer pageSize) {
+         //查询客户进行中的历史委托
+         //流程大概为到Repair表和Order中查询本clientId下所有车辆的委托
+         List<>
     }
 }
