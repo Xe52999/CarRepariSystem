@@ -2,5 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.shu.carsystem.mapper.OrderMapper">
 
+    <!--int insertOrder(Order order);-->
+    <insert id="insertOrder" useGeneratedKeys="true" keyProperty="orderId">
+        <selectKey keyProperty="orderId" resultType="Integer" order="BEFORE">
+            select (select max(order_id) from "order")+1 as order_id;
+        </selectKey>
+        insert into "order" values (#{orderId},#{repairId},#{proId},#{hour},#{maintainId})
+    </insert>
 
 </mapper>

@@ -3,13 +3,11 @@ package com.shu.carsystem.controller;
 import com.shu.carsystem.common.Result;
 import com.shu.carsystem.common.ResultEnum;
 import com.shu.carsystem.entity.Client;
+import com.shu.carsystem.entity.Order;
 import com.shu.carsystem.entity.User;
 import com.shu.carsystem.entity.Vehicle;
-import com.shu.carsystem.service.ClientService;
+import com.shu.carsystem.service.*;
 import com.shu.carsystem.service.Impl.UserServiceImpl;
-import com.shu.carsystem.service.RepairService;
-import com.shu.carsystem.service.UserService;
-import com.shu.carsystem.service.VehicleService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
@@ -35,6 +33,9 @@ public class UserController {
 
     @Autowired
     private ClientService clientService;
+
+    @Autowired
+    private OrderService orderService;
 
     @GetMapping("/login/{username}/{password}")
     private Result[] userLogin(@PathVariable("username") String username, @PathVariable("password") String password, HttpSession httpSession)
@@ -90,5 +91,23 @@ public class UserController {
         if(res == 0) return Result.create(ResultEnum.UNKNOWN_ERROR,null);
         return Result.create(ResultEnum.SUCCESS,client);
     }
+
+
+    @GetMapping("/show/order/receive")
+    public Result showOrderToReceive(){
+        return repairService.showOrderToReceive();
+    }
+
+    @GetMapping("/show/order/progress")
+    public Result showOrderInProgress(){
+        return repairService.showOrderInProgress();
+    }
+
+    @PostMapping("/order/insert/{userId}/{repairId}")
+    public Result insertOrder(@PathVariable("userId") Integer userId, @PathVariable("repairId") Integer repairId){
+        return orderService.insertOrder(userId,repairId);
+    }
+
+
 
 }

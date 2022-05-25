@@ -9,7 +9,7 @@
         <result property="payment" column="payment"></result>
         <result property="mile" column="mile"></result>
         <result property="fuel" column="fuel"></result>
-        <result property="approach_time" column="approach_time"></result>
+        <result property="approachTime" column="approach_time"></result>
         <result property="failure" column="failure"></result>
         <result property="ddl" column="ddl"></result>
         <result property="cost" column="cost"></result>
@@ -20,7 +20,7 @@
     <select id="getListByUID" resultMap="RepairMap">
         select * from "repair"
         <where>
-            user _id = #{id};
+            user_id = #{id};
         </where>
     </select>
 
@@ -36,4 +36,20 @@
         </selectKey>
         insert into "repair" values (#{repairId},#{type},#{classification},#{payment},#{mile},#{fuel},#{approachTime},#{failure},#{ddl},#{cost},#{userId},#{vehicleId})
     </insert>
+
+    <!--    List<Repair> showOrderToReceive();-->
+    <select id="showOrderToReceive" resultType="Repair">
+        select * from repair where user_id is null;
+    </select>
+
+    <!--List<Repair> showOrderInProgress();-->
+    <select id="showOrderInProgress" resultType="Repair">
+        select * from repair where user_id is not null;
+    </select>
+
+    <!--    int updateRepairByRepairId(@Param("userId") Integer userId,@Param("repairId") Integer repairId);-->
+    <update id="updateRepairByRepairId">
+        update repair set user_id = #{userId} where repair_id=#{repairId};
+    </update>
+
 </mapper>
