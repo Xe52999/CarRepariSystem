@@ -40,19 +40,39 @@
         insert into "repair" values (#{repairId},#{type},#{classification},#{payment},#{mile},#{fuel},#{approachTime},#{failure},#{ddl},#{cost},#{userId},#{vehicleId},#{hour},#{maintainerId},#{statu})
     </insert>
 
-    <!--    List<Repair> showOrderToReceive();-->
-    <select id="showOrderToReceive" resultType="Repair">
-        select * from repair where user_id is null;
+    <!--    List<Repair> showRepairToReceive();-->
+    <select id="showRepairToReceive" resultType="Repair">
+        select * from repair where statu = '未接单'
     </select>
 
-    <!--List<Repair> showOrderInProgress();-->
-    <select id="showOrderInProgress" resultType="Repair">
-        select * from repair where user_id is not null;
+    <!--List<Repair> showRepairInProgress();-->
+    <select id="showRepairInProgress" resultType="Repair">
+        select * from repair where statu = '等待派单'
     </select>
 
-    <!--    int updateRepairByRepairId(@Param("userId") Integer userId,@Param("repairId") Integer repairId);-->
-    <update id="updateRepairByRepairId">
-        update repair set user_id = #{userId} where repair_id=#{repairId};
+    <!--    List<Repair> showRepairComplete();-->
+    <select id="showRepairComplete" resultType="Repair">
+        select * from repair where statu = '已完成'
+    </select>
+
+
+    <!--     int updateRepair(Repair repair);;-->
+    <update id="updateRepair" parameterType="Repair">
+        update repair set   type = #{type},
+                            classification=#{classification},
+                            payment=#{payment},
+                            mile=#{mile},
+                            fuel=#{fuel},
+                            approach_time=#{approachTime} ,
+                            failure=#{failure} ,
+                            ddl=#{ddl} ,
+                            cost=#{cost} ,
+                            user_id=#{userId} ,
+                            vehicle_id=#{vehicleId} ,
+                            hour=#{hour}   ,
+                            maintainer_id=#{maintainId} ,
+                            statu=#{statu}
+        where repair_id=#{repairId};
     </update>
 
 </mapper>

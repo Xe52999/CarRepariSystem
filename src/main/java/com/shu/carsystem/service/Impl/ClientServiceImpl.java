@@ -109,6 +109,6 @@ public class ClientServiceImpl implements ClientService {
     public Result queryOngoingHistory(Integer clientId, Integer pageNo, Integer pageSize) {
          //查询客户进行中的历史委托
          //流程大概为到Repair表和Order中查询本clientId下所有车辆的委托
-         List<>
+        return null;
     }
 }

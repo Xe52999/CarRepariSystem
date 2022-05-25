@@ -1,5 +1,8 @@
 package com.shu.carsystem.service.Impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.shu.carsystem.common.Result;
 import com.shu.carsystem.common.ResultEnum;
 import com.shu.carsystem.entity.Repair;
@@ -21,16 +24,42 @@ public class RepairServiceImpl implements RepairService {
     }
 
     @Override
-    public Result showOrderToReceive() {
-        List<Repair> repairs = repairMapper.showOrderToReceive();
-        //分页未实现，应该封装的是pageInfo
-        return Result.create(ResultEnum.QUERY_SUCCESS,repairs);
+    public Result showRepairToReceive(Integer pageNo,Integer pageSize) {
+        PageHelper.startPage(pageNo,pageSize);
+        List<Repair> repairs = repairMapper.showRepairToReceive();
+        PageInfo<Repair> repairPageInfo = new PageInfo<>(repairs);
+        return Result.create(ResultEnum.QUERY_SUCCESS,repairPageInfo);
+    }
+
+
+    @Override
+    public Result showRepairInProgress(Integer pageNo,Integer pageSize) {
+        PageHelper.startPage(pageNo,pageSize);
+        List<Repair> repairs = repairMapper.showRepairInProgress();
+        PageInfo<Repair> repairPageInfo = new PageInfo<>(repairs);
+        return Result.create(ResultEnum.QUERY_SUCCESS,repairPageInfo);
     }
 
     @Override
-    public Result showOrderInProgress() {
-        List<Repair> repairs = repairMapper.showOrderInProgress();
-        //分页未实现，应该封装的是pageInfo
-        return Result.create(ResultEnum.QUERY_SUCCESS,repairs);
+    public Result showRepairComplete(Integer pageNo, Integer pageSize) {
+        PageHelper.startPage(pageNo,pageSize);
+        List<Repair> repairs = repairMapper.showRepairComplete();
+        PageInfo<Repair> repairPageInfo = new PageInfo<>(repairs);
+        return Result.create(ResultEnum.QUERY_SUCCESS,repairPageInfo);
     }
+
+    @Override
+    public Result updateRepair(Repair repair,Integer userId) {
+        repair.setStatu("等待派单"); //修改状态
+        repair.setUserId(userId);   //设置业务员编号
+
+        /**
+         * 更新之前 要先判断，userId vechiledId maintainId 是否存在，若不存在则说明，非法，不予更新，并且返回错位信息
+         */
+        int i = repairMapper.updateRepair(repair);//更新
+        if(i==0) return Result.create(ResultEnum.UPDATE_ERROR,repair);
+        else return Result.create(ResultEnum.UPDATE_SUCCESS,repair);
+    }
+
+
 }
