@@ -19,6 +19,16 @@
         <result property="maintainerId" column="maintainer_id"></result>
         <result property="statu" column="statu"></result>
     </resultMap>
+
+
+    <resultMap id="RepairVehicleMap" type="com.shu.carsystem.pojo.RepairVehicle">
+        <id property="repairId" column="repair_id"></id>
+        <result property="license" column="license"></result>
+        <result property="vin" column="vin"></result>
+        <result property="category" column="class"></result>
+        <result property="failure" column="failure"></result>
+    </resultMap>
+
     <!-- List<Repair> getListByUId(Integer id); -->
     <select id="getListByUID" resultMap="RepairMap">
         select * from "repair"
@@ -40,9 +50,16 @@
         insert into "repair" values (#{repairId},#{type},#{classification},#{payment},#{mile},#{fuel},#{approachTime},#{failure},#{ddl},#{cost},#{userId},#{vehicleId},#{hour},#{maintainerId},#{statu})
     </insert>
 
-    <!--    List<Repair> showRepairToReceive();-->
-    <select id="showRepairToReceive" resultType="Repair">
-        select * from repair where statu = '未接单'
+    <!--List<Repair> showRepairToReceive(@Param("keyword") String keyword);-->
+    <select id="showRepairToReceive" resultMap="RepairVehicleMap">
+            select repair.repair_id ,vehicle.license,vehicle.vin,vehicle.class,repair.failure
+            from repair ,vehicle
+            <where>
+                repair.statu = '未接单'and repair.vehicle_id=vehicle.vehicle_id
+                <if test="keyword != '' and keyword !='null'">
+                    and (repair_id like '%${keyword}%' or license like '%${keyword}%' or vin like '%${keyword}%' or   class like '%${keyword}%' or failure like '%${keyword}%' )
+                </if>
+            </where>
     </select>
 
     <!--List<Repair> showRepairInProgress();-->

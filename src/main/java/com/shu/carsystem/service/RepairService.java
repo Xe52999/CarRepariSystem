@@ -12,7 +12,7 @@ public interface RepairService {
     List<Repair> getListByUId(Integer id);
 
 
-    Result showRepairToReceive(Integer pageNo,Integer pageSize);
+    Result showRepairToReceive(Integer pageNo,Integer pageSize,String keyword);
 
 
     Result showRepairInProgress(Integer pageNo,Integer pageSize);

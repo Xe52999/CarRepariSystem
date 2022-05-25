@@ -33,9 +33,9 @@ public class RepairServiceImpl implements RepairService {
     }
 
     @Override
-    public Result showRepairToReceive(Integer pageNo,Integer pageSize) {
+    public Result showRepairToReceive(Integer pageNo,Integer pageSize,String keyword) {
         PageHelper.startPage(pageNo,pageSize);
-        List<Repair> repairs = repairMapper.showRepairToReceive();
+        List<Repair> repairs = repairMapper.showRepairToReceive(keyword);
         PageInfo<Repair> repairPageInfo = new PageInfo<>(repairs);
         return Result.create(ResultEnum.QUERY_SUCCESS,repairPageInfo);
     }

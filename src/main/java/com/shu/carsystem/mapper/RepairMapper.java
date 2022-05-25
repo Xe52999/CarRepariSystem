@@ -21,7 +21,7 @@ public interface RepairMapper {
 
 
     //返回所有待接的订单
-    List<Repair> showRepairToReceive();
+    List<Repair> showRepairToReceive(@Param("keyword") String keyword);
 
     //返回所有待分派的订单
     List<Repair> showRepairInProgress();
@@ -31,5 +31,7 @@ public interface RepairMapper {
 
     //业务员 编辑 委托
     int updateRepair(Repair repair);
+
+    //
 
 }
