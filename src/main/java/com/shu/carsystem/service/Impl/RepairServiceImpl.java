@@ -58,6 +58,14 @@ public class RepairServiceImpl implements RepairService {
     }
 
     @Override
+    public Result showAllRepair(Integer pageNo, Integer pageSize, String keyword) {
+        PageHelper.startPage(pageNo,pageSize);
+        List<Repair> repairs = repairMapper.showAllRepair(keyword);
+        PageInfo<Repair> repairPageInfo = new PageInfo<>(repairs);
+        return Result.create(ResultEnum.QUERY_SUCCESS,repairPageInfo);
+    }
+
+    @Override
     public Result updateRepair(Repair repair,Integer userId) {
         repair.setStatu("等待派单"); //修改状态
         repair.setUserId(userId);   //设置业务员编号

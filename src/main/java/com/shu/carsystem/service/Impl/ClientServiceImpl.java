@@ -94,7 +94,7 @@ public class ClientServiceImpl implements ClientService {
             //请求参数包含粗略故障，说明是新增客户委托
             //判断大致分为：是否存在对应车架号？该车架号是否已登陆过维修？
             String vin =(String) map.get("vin");
-            Integer vehicleId = vehicleMapper.getVidByVin(vin);
+            Integer vehicleId = (Integer) vehicleMapper.getVidByVin(vin);
             if(vehicleMapper.containLicenseOrVin(null, vin) == 0) return Result.create(ResultEnum.USER_NOT_EXIST,null);
             if(repairMapper.getRepairByVehicleId(vehicleId) != null) return  Result.create(ResultEnum.USER_IS_EXISTS,null);
             Repair repair = new Repair();

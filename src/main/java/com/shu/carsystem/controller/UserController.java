@@ -134,4 +134,13 @@ public class UserController {
     public Result updateClient(@RequestBody Client client){
         return clientService.updateClient(client);
     }
+
+
+    @GetMapping("/show/repair/{pageNo}/{pageSize}/{keyword}")
+    public Result showAllRepair(@PathVariable("pageNo") Integer pageNo,
+                                @PathVariable("pageSize") Integer pageSize,
+                                @PathVariable("keyword") String keyword){
+
+        return repairService.showAllRepair(pageNo,pageSize,keyword);
+    }
 }

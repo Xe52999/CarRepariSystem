@@ -28,6 +28,7 @@ public interface RepairMapper {
 
 
 
+
     //返回所有待接的订单
     List<Repair> showRepairToReceive(@Param("keyword") String keyword);
 
@@ -47,5 +48,6 @@ public interface RepairMapper {
     int updateRepair(Repair repair);
 
     //
+    List<Repair> showAllRepair(@Param("keyword") String keyword);
 
 }

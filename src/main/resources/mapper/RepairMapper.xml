@@ -27,6 +27,7 @@
         <result property="vin" column="vin"></result>
         <result property="category" column="class"></result>
         <result property="failure" column="failure"></result>
+        <result property="statu" column="statu"></result>
     </resultMap>
 
     <!-- List<Repair> getListByUId(Integer id); -->
@@ -138,4 +139,15 @@
         where repair_id=#{repairId};
     </update>
 
+    <!--    List<Repair> showAllRepair(@Param("keyword") String keyword);-->
+    <select id="showAllRepair" resultMap="RepairVehicleMap">
+        select repair.repair_id ,vehicle.license,vehicle.vin,vehicle.class,repair.failure,repair.statu
+        from repair ,vehicle
+        <where>
+            repair.vehicle_id=vehicle.vehicle_id
+            <if test="keyword != '' and keyword !='null'">
+                and (repair_id like '%${keyword}%' or license like '%${keyword}%' or vin like '%${keyword}%' or   class like '%${keyword}%' or failure like '%${keyword}%' or statu  like '%${keyword}%')
+            </if>
+        </where>
+    </select>
 </mapper>

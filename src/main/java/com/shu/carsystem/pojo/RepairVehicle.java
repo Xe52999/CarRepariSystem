@@ -13,4 +13,5 @@ public class RepairVehicle {
     private String vin;
     private String category;
     private String failure;
+    private String statu;
 }
