@@ -123,6 +123,15 @@ public class UserController {
         return userService.showRepairman(pageNo,pageSize,keyword);
     }
 
+    @GetMapping("/show/client/{pageNo}/{pageSize}/{keyword}")
+    public Result showClient(@PathVariable("pageNo") Integer pageNo,
+                                @PathVariable("pageSize") Integer pageSize,
+                                @PathVariable("keyword") String keyword){
+        return clientService.showClient(pageNo,pageSize,keyword);
+    }
 
-
+    @PutMapping("/client/update")
+    public Result updateClient(@RequestBody Client client){
+        return clientService.updateClient(client);
+    }
 }

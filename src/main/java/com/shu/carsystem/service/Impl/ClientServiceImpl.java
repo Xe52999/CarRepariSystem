@@ -1,5 +1,7 @@
 package com.shu.carsystem.service.Impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.shu.carsystem.common.Result;
 import com.shu.carsystem.common.ResultEnum;
 import com.shu.carsystem.entity.Client;
@@ -8,11 +10,13 @@ import com.shu.carsystem.entity.Vehicle;
 import com.shu.carsystem.mapper.ClientMapper;
 import com.shu.carsystem.mapper.RepairMapper;
 import com.shu.carsystem.mapper.VehicleMapper;
+import com.shu.carsystem.pojo.ProjectRepairman;
 import com.shu.carsystem.service.ClientService;
 import com.shu.carsystem.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -111,4 +115,21 @@ public class ClientServiceImpl implements ClientService {
          //流程大概为到Repair表和Order中查询本clientId下所有车辆的委托
         return null;
     }
+
+    @Override
+    public Result showClient(Integer pageNo, Integer pageSize, String keyword) {
+        PageHelper.startPage(pageNo,pageSize);
+        List<Client> clients = clientMapper.showClient(keyword);
+        PageInfo<Client> pageInfo = new PageInfo<>(clients);
+        return Result.create(ResultEnum.QUERY_SUCCESS,pageInfo);
+    }
+
+    @Override
+    public Result updateClient(Client client) {
+        int i = clientMapper.updateClient(client);
+        if(i == 0 ) return Result.create(ResultEnum.UPDATE_ERROR,client);
+        else return Result.create(ResultEnum.UPDATE_SUCCESS,client);
+    }
+
+
 }

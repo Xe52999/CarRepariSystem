@@ -51,4 +51,22 @@
         update client set name = #{name}, nature = #{nature}, contact = #{contact}, phone = #{phone}
             where client_id = #{id};
     </update>
+
+
+    <!--    List<Client> showClient(@Param("keyword")String keyword);-->
+    <select id="showClient" resultType="Client">
+        select * from client
+        <where>
+            <if test="keyword != '' and keyword !='null'">
+                (client_id like '%${keyword}%' or name like '%${keyword}%' or nature like '%${keyword}%' or   discount like '%${keyword}%' or contact like '%${keyword}%' or phone like '%${keyword}%' )
+            </if>
+        </where>
+    </select>
+
+
+    <!--    int updateClient(Client client);-->
+    <update id="updateClient">
+        update client set name=#{name},nature=#{nature},discount=#{discount},contact=#{contact},phone=#{phone}
+        where client_id=#{clientId}
+    </update>
 </mapper>

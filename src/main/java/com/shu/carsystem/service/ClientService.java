@@ -20,4 +20,9 @@ public interface ClientService {
     Result addClientInfo(Map<String, Object> map);
 
     Result queryOngoingHistory(Integer clientId, Integer pageNo, Integer pageSize);
+
+    Result showClient(Integer pageNo,Integer pageSize,String keyword);
+
+    Result updateClient(Client client);
+
 }

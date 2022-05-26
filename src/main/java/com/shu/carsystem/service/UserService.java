@@ -8,4 +8,6 @@ public interface UserService {
 
     Result inquireByName(String id);
     Result showRepairman(Integer pageNo,Integer pageSize,String keyword);
+
+
 }

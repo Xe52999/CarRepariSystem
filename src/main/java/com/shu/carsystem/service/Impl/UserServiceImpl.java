@@ -71,4 +71,5 @@ public class UserServiceImpl implements UserService {
         PageInfo<ProjectRepairman> pageInfo = new PageInfo<>(projectRepairmen);
         return Result.create(ResultEnum.QUERY_SUCCESS,pageInfo);
     }
+
 }
