@@ -62,14 +62,28 @@
             </where>
     </select>
 
-    <!--List<Repair> showRepairInProgress();-->
-    <select id="showRepairInProgress" resultType="Repair">
-        select * from repair where statu = '等待派单'
+    <!--    List<Repair> showRepairInProgress(@Param("keyword") String keyword);-->
+    <select id="showRepairInProgress" resultMap="RepairVehicleMap">
+        select repair.repair_id ,vehicle.license,vehicle.vin,vehicle.class,repair.failure
+        from repair ,vehicle
+        <where>
+            repair.statu = '等待派单'and repair.vehicle_id=vehicle.vehicle_id
+            <if test="keyword != '' and keyword !='null'">
+                and (repair_id like '%${keyword}%' or license like '%${keyword}%' or vin like '%${keyword}%' or   class like '%${keyword}%' or failure like '%${keyword}%' )
+            </if>
+        </where>
     </select>
 
-    <!--    List<Repair> showRepairComplete();-->
-    <select id="showRepairComplete" resultType="Repair">
-        select * from repair where statu = '已完成'
+    <!--     List<Repair> showRepairComplete(@Param("keyword") String keyword);-->
+    <select id="showRepairComplete" resultMap="RepairVehicleMap">
+        select repair.repair_id ,vehicle.license,vehicle.vin,vehicle.class,repair.failure
+        from repair ,vehicle
+        <where>
+            repair.statu = '已完成'and repair.vehicle_id=vehicle.vehicle_id
+            <if test="keyword != '' and keyword !='null'">
+                and (repair_id like '%${keyword}%' or license like '%${keyword}%' or vin like '%${keyword}%' or   class like '%${keyword}%' or failure like '%${keyword}%' )
+            </if>
+        </where>
     </select>
 
 

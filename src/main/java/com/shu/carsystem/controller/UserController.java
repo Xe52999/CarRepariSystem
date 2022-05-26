@@ -97,18 +97,19 @@ public class UserController {
 
         return repairService.showRepairToReceive(pageNo,pageSize,keyword);
     }
-/////////////////////////////////////////////////////////
-    ///中间部分需要修改为模糊查询
-    @GetMapping("/show/repair/progress/{pageNo}/{pageSize}")
-    public Result showRepairInProgress(@PathVariable("pageNo") Integer pageNo,@PathVariable("pageSize") Integer pageSize){
-        return repairService.showRepairInProgress(pageNo,pageSize);
+    @GetMapping("/show/repair/progress/{pageNo}/{pageSize}/{keyword}")
+    public Result showRepairInProgress(@PathVariable("pageNo") Integer pageNo,
+                                       @PathVariable("pageSize") Integer pageSize,
+                                       @PathVariable("keyword") String keyword){
+        return repairService.showRepairInProgress(pageNo,pageSize,keyword);
     }
 
-    @GetMapping("/show/repair/complete/{pageNo}/{pageSize}")
-    public Result showRepairComplete(@PathVariable("pageNo") Integer pageNo,@PathVariable("pageSize") Integer pageSize){
-        return repairService.showRepairComplete(pageNo,pageSize);
+    @GetMapping("/show/repair/complete/{pageNo}/{pageSize}/{keyword}")
+    public Result showRepairComplete(@PathVariable("pageNo") Integer pageNo,
+                                     @PathVariable("pageSize") Integer pageSize,
+                                     @PathVariable("keyword") String keyword){
+        return repairService.showRepairComplete(pageNo,pageSize,keyword);
     }
-////////////////////////////////////////////////////////////////
     @PutMapping("/repair/{userId}")
     public Result updateRepair(@RequestBody Repair repair, @PathVariable("userId") Integer userId){
         return repairService.updateRepair(repair,userId);

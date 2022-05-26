@@ -42,17 +42,17 @@ public class RepairServiceImpl implements RepairService {
 
 
     @Override
-    public Result showRepairInProgress(Integer pageNo,Integer pageSize) {
+    public Result showRepairInProgress(Integer pageNo,Integer pageSize,String keyword) {
         PageHelper.startPage(pageNo,pageSize);
-        List<Repair> repairs = repairMapper.showRepairInProgress();
+        List<Repair> repairs = repairMapper.showRepairInProgress(keyword);
         PageInfo<Repair> repairPageInfo = new PageInfo<>(repairs);
         return Result.create(ResultEnum.QUERY_SUCCESS,repairPageInfo);
     }
 
     @Override
-    public Result showRepairComplete(Integer pageNo, Integer pageSize) {
+    public Result showRepairComplete(Integer pageNo, Integer pageSize,String keyword) {
         PageHelper.startPage(pageNo,pageSize);
-        List<Repair> repairs = repairMapper.showRepairComplete();
+        List<Repair> repairs = repairMapper.showRepairComplete(keyword);
         PageInfo<Repair> repairPageInfo = new PageInfo<>(repairs);
         return Result.create(ResultEnum.QUERY_SUCCESS,repairPageInfo);
     }

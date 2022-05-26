@@ -15,9 +15,9 @@ public interface RepairService {
     Result showRepairToReceive(Integer pageNo,Integer pageSize,String keyword);
 
 
-    Result showRepairInProgress(Integer pageNo,Integer pageSize);
+    Result showRepairInProgress(Integer pageNo,Integer pageSize,String keyword);
 
-    Result showRepairComplete(Integer pageNo,Integer pageSize);
+    Result showRepairComplete(Integer pageNo,Integer pageSize,String keyword);
 
 
     Result updateRepair(Repair repair,Integer userId);

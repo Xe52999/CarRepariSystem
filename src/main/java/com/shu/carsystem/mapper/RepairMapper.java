@@ -24,10 +24,16 @@ public interface RepairMapper {
     List<Repair> showRepairToReceive(@Param("keyword") String keyword);
 
     //返回所有待分派的订单
-    List<Repair> showRepairInProgress();
+
+    /**
+     * 为什么返回的 不是RepairVehicle 也可以？
+     * @param keyword
+     * @return
+     */
+    List<Repair> showRepairInProgress(@Param("keyword") String keyword);
 
     //返回所有已经完成的订单
-    List<Repair> showRepairComplete();
+    List<Repair> showRepairComplete(@Param("keyword") String keyword);
 
     //业务员 编辑 委托
     int updateRepair(Repair repair);
