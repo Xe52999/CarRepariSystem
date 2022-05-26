@@ -16,7 +16,6 @@
         <result property="userId" column="user_id"></result>
         <result property="vehicleId" column="vehicle_id"></result>
         <result property="hour" column="hour"></result>
-        <result property="maintainerId" column="maintainer_id"></result>
         <result property="statu" column="statu"></result>
     </resultMap>
 
@@ -48,7 +47,7 @@
         <selectKey keyProperty="repairId" resultType="Integer" order="BEFORE">
             select (select max(repair_id) from repair)+1 as repair_id;
         </selectKey>
-        insert into "repair" values (#{repairId},#{type},#{classification},#{payment},#{mile},#{fuel},#{approachTime},#{failure},#{ddl},#{cost},#{userId},#{vehicleId},#{hour},#{maintainerId})
+        insert into "repair" values (#{repairId},#{type},#{classification},#{payment},#{mile},#{fuel},#{approachTime},#{failure},#{ddl},#{cost},#{userId},#{vehicleId},#{hour})
     </insert>
 
     <!-- List<ClientRecord> queryClientHistoryRecord(@Param("clientId") int clientId, @Param("keyWord") String keyWord); -->
@@ -133,8 +132,7 @@
                             cost=#{cost} ,
                             user_id=#{userId} ,
                             vehicle_id=#{vehicleId} ,
-                            hour=#{hour}   ,
-                            maintainer_id=#{maintainId} ,
+                            hour=#{hour}  ,
                             statu=#{statu}
         where repair_id=#{repairId};
     </update>
@@ -148,6 +146,14 @@
             <if test="keyword != '' and keyword !='null'">
                 and (repair_id like '%${keyword}%' or license like '%${keyword}%' or vin like '%${keyword}%' or   class like '%${keyword}%' or failure like '%${keyword}%' or statu  like '%${keyword}%')
             </if>
+        </where>
+    </select>
+
+    <!-- List<Integer> getDispatchedList(); -->
+    <select id="getDispatchedList" resultType="Integer">
+        select repair_id from repair
+        <where>
+            statu = '等待派单';
         </where>
     </select>
 </mapper>
