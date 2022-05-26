@@ -17,6 +17,7 @@ public class User {
     private String password;
     private String phone;
     private Integer isRepairman;
+    private String job;
     private String statu;
 
     public User(Integer userId, String password) {

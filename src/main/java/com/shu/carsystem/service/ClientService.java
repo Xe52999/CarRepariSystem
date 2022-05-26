@@ -22,4 +22,9 @@ public interface ClientService {
     Result queryOngoingHistory(Integer clientId, Integer pageNo, Integer pageSize, String keyWord);
 
     Result queryFinishedHistory(Integer clientId, Integer pageNo, Integer pageSize, String keyWord);
+
+    Result showClient(Integer pageNo,Integer pageSize,String keyword);
+
+    Result updateClient(Client client);
+
 }

@@ -25,4 +25,27 @@ public interface RepairMapper {
 
     //分页查询，根据客户的client_id查询客户页面的委托记录
     List<ClientRecord> queryClientFinishedRecord(@Param("clientId") int clientId, @Param("keyWord") String keyWord);
+
+
+
+    //返回所有待接的订单
+    List<Repair> showRepairToReceive(@Param("keyword") String keyword);
+
+    //返回所有待分派的订单
+
+    /**
+     * 为什么返回的 不是RepairVehicle 也可以？
+     * @param keyword
+     * @return
+     */
+    List<Repair> showRepairInProgress(@Param("keyword") String keyword);
+
+    //返回所有已经完成的订单
+    List<Repair> showRepairComplete(@Param("keyword") String keyword);
+
+    //业务员 编辑 委托
+    int updateRepair(Repair repair);
+
+    //
+
 }

@@ -3,13 +3,11 @@ package com.shu.carsystem.controller;
 import com.shu.carsystem.common.Result;
 import com.shu.carsystem.common.ResultEnum;
 import com.shu.carsystem.entity.Client;
+import com.shu.carsystem.entity.Repair;
 import com.shu.carsystem.entity.User;
 import com.shu.carsystem.entity.Vehicle;
-import com.shu.carsystem.service.ClientService;
+import com.shu.carsystem.service.*;
 import com.shu.carsystem.service.Impl.UserServiceImpl;
-import com.shu.carsystem.service.RepairService;
-import com.shu.carsystem.service.UserService;
-import com.shu.carsystem.service.VehicleService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
@@ -91,4 +89,49 @@ public class UserController {
         return Result.create(ResultEnum.SUCCESS,client);
     }
 
+
+    @GetMapping("/show/repair/receive/{pageNo}/{pageSize}/{keyword}")
+    public Result showRepairToReceive(@PathVariable("pageNo") Integer pageNo,
+                                      @PathVariable("pageSize") Integer pageSize,
+                                      @PathVariable("keyword") String keyword){
+
+        return repairService.showRepairToReceive(pageNo,pageSize,keyword);
+    }
+    @GetMapping("/show/repair/progress/{pageNo}/{pageSize}/{keyword}")
+    public Result showRepairInProgress(@PathVariable("pageNo") Integer pageNo,
+                                       @PathVariable("pageSize") Integer pageSize,
+                                       @PathVariable("keyword") String keyword){
+        return repairService.showRepairInProgress(pageNo,pageSize,keyword);
+    }
+
+    @GetMapping("/show/repair/complete/{pageNo}/{pageSize}/{keyword}")
+    public Result showRepairComplete(@PathVariable("pageNo") Integer pageNo,
+                                     @PathVariable("pageSize") Integer pageSize,
+                                     @PathVariable("keyword") String keyword){
+        return repairService.showRepairComplete(pageNo,pageSize,keyword);
+    }
+    @PutMapping("/repair/{userId}")
+    public Result updateRepair(@RequestBody Repair repair, @PathVariable("userId") Integer userId){
+        return repairService.updateRepair(repair,userId);
+
+    }
+
+    @GetMapping("/show/repairman/{pageNo}/{pageSize}/{keyword}")
+    public Result showRepairman(@PathVariable("pageNo") Integer pageNo,
+                                @PathVariable("pageSize") Integer pageSize,
+                                @PathVariable("keyword") String keyword){
+        return userService.showRepairman(pageNo,pageSize,keyword);
+    }
+
+    @GetMapping("/show/client/{pageNo}/{pageSize}/{keyword}")
+    public Result showClient(@PathVariable("pageNo") Integer pageNo,
+                                @PathVariable("pageSize") Integer pageSize,
+                                @PathVariable("keyword") String keyword){
+        return clientService.showClient(pageNo,pageSize,keyword);
+    }
+
+    @PutMapping("/client/update")
+    public Result updateClient(@RequestBody Client client){
+        return clientService.updateClient(client);
+    }
 }

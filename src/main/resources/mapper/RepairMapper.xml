@@ -19,11 +19,21 @@
         <result property="maintainerId" column="maintainer_id"></result>
         <result property="statu" column="statu"></result>
     </resultMap>
+
+
+    <resultMap id="RepairVehicleMap" type="com.shu.carsystem.pojo.RepairVehicle">
+        <id property="repairId" column="repair_id"></id>
+        <result property="license" column="license"></result>
+        <result property="vin" column="vin"></result>
+        <result property="category" column="class"></result>
+        <result property="failure" column="failure"></result>
+    </resultMap>
+
     <!-- List<Repair> getListByUId(Integer id); -->
     <select id="getListByUID" resultMap="RepairMap">
         select * from "repair"
         <where>
-            user _id = #{id};
+            user_id = #{id};
         </where>
     </select>
 
@@ -71,4 +81,61 @@
             </if>
         </where>
     </select>
+
+    <!--List<Repair> showRepairToReceive(@Param("keyword") String keyword);-->
+    <select id="showRepairToReceive" resultMap="RepairVehicleMap">
+            select repair.repair_id ,vehicle.license,vehicle.vin,vehicle.class,repair.failure
+            from repair ,vehicle
+            <where>
+                repair.statu = '未接单'and repair.vehicle_id=vehicle.vehicle_id
+                <if test="keyword != '' and keyword !='null'">
+                    and (repair_id like '%${keyword}%' or license like '%${keyword}%' or vin like '%${keyword}%' or   class like '%${keyword}%' or failure like '%${keyword}%' )
+                </if>
+            </where>
+    </select>
+
+    <!--    List<Repair> showRepairInProgress(@Param("keyword") String keyword);-->
+    <select id="showRepairInProgress" resultMap="RepairVehicleMap">
+        select repair.repair_id ,vehicle.license,vehicle.vin,vehicle.class,repair.failure
+        from repair ,vehicle
+        <where>
+            repair.statu = '等待派单'and repair.vehicle_id=vehicle.vehicle_id
+            <if test="keyword != '' and keyword !='null'">
+                and (repair_id like '%${keyword}%' or license like '%${keyword}%' or vin like '%${keyword}%' or   class like '%${keyword}%' or failure like '%${keyword}%' )
+            </if>
+        </where>
+    </select>
+
+    <!--     List<Repair> showRepairComplete(@Param("keyword") String keyword);-->
+    <select id="showRepairComplete" resultMap="RepairVehicleMap">
+        select repair.repair_id ,vehicle.license,vehicle.vin,vehicle.class,repair.failure
+        from repair ,vehicle
+        <where>
+            repair.statu = '已完成'and repair.vehicle_id=vehicle.vehicle_id
+            <if test="keyword != '' and keyword !='null'">
+                and (repair_id like '%${keyword}%' or license like '%${keyword}%' or vin like '%${keyword}%' or   class like '%${keyword}%' or failure like '%${keyword}%' )
+            </if>
+        </where>
+    </select>
+
+
+    <!--     int updateRepair(Repair repair);;-->
+    <update id="updateRepair" parameterType="Repair">
+        update repair set   type = #{type},
+                            classification=#{classification},
+                            payment=#{payment},
+                            mile=#{mile},
+                            fuel=#{fuel},
+                            approach_time=#{approachTime} ,
+                            failure=#{failure} ,
+                            ddl=#{ddl} ,
+                            cost=#{cost} ,
+                            user_id=#{userId} ,
+                            vehicle_id=#{vehicleId} ,
+                            hour=#{hour}   ,
+                            maintainer_id=#{maintainId} ,
+                            statu=#{statu}
+        where repair_id=#{repairId};
+    </update>
+
 </mapper>

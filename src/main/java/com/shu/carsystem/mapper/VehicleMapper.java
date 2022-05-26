@@ -16,4 +16,7 @@ public interface VehicleMapper {
     int insertVehicle(Vehicle vehicle);
 
     Object getVidByVin(String vin);
+
+    Vehicle getVehicleByVehicleId(@Param("vehicleId") Integer vehicleId);
+
 }

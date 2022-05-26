@@ -1,14 +1,19 @@
 package com.shu.carsystem.service.Impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.shu.carsystem.common.Result;
 import com.shu.carsystem.common.ResultEnum;
 import com.shu.carsystem.entity.Client;
 import com.shu.carsystem.entity.User;
 import com.shu.carsystem.mapper.ClientMapper;
 import com.shu.carsystem.mapper.UserMapper;
+import com.shu.carsystem.pojo.ProjectRepairman;
 import com.shu.carsystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -58,4 +63,13 @@ public class UserServiceImpl implements UserService {
         }
         return Result.create(ResultEnum.USER_IS_EXISTS,null);
     }
+
+    @Override
+    public Result showRepairman(Integer pageNo,Integer pageSize,String keyword) {
+        PageHelper.startPage(pageNo,pageSize);
+        List<ProjectRepairman> projectRepairmen = userMapper.showRepairman(keyword);
+        PageInfo<ProjectRepairman> pageInfo = new PageInfo<>(projectRepairmen);
+        return Result.create(ResultEnum.QUERY_SUCCESS,pageInfo);
+    }
+
 }

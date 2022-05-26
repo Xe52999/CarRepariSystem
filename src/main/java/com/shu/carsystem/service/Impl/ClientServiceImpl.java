@@ -12,6 +12,7 @@ import com.shu.carsystem.mapper.ClientMapper;
 import com.shu.carsystem.mapper.RepairMapper;
 import com.shu.carsystem.mapper.VehicleMapper;
 import com.shu.carsystem.pojo.ClientRecord;
+import com.shu.carsystem.pojo.ProjectRepairman;
 import com.shu.carsystem.service.ClientService;
 import com.shu.carsystem.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class ClientServiceImpl implements ClientService {
@@ -88,36 +91,20 @@ public class ClientServiceImpl implements ClientService {
             return Result.create(ResultEnum.INSERT_SUCCESS,vehicle);
         }
         else{
-//            String[] mon = {"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
-//            List<String> months = Arrays.asList(mon);
             //请求参数包含粗略故障，说明是新增客户委托
             //判断大致分为：是否存在对应车架号？该车架号是否已登陆过维修？
             String vin =(String) map.get("vin");
-            Integer vehicleId = (vehicleMapper.getVidByVin(vin) == null) ? -1 : (Integer) vehicleMapper.getVidByVin(vin);
-            if(vehicleId == -1) return Result.create(ResultEnum.USER_NOT_EXIST,null);
+            Integer vehicleId = vehicleMapper.getVidByVin(vin);
             if(vehicleMapper.containLicenseOrVin(null, vin) == 0) return Result.create(ResultEnum.USER_NOT_EXIST,null);
             if(repairMapper.getRepairByVehicleId(vehicleId) != null) return  Result.create(ResultEnum.USER_IS_EXISTS,null);
             Repair repair = new Repair();
             repair.setPayment((String) map.get("payment"));
             repair.setVehicleId(vehicleId);
             repair.setFailure((String) map.get("failure"));
-            String temp = map.get("fuel").toString();
-            Double fuel = Double.valueOf(temp);
-            fuel /= 10;
+            Double fuel = ((Double) map.get("fuel"))/100;
             repair.setFuel(Double.parseDouble(String.format("%.2f",fuel).toString()));
-            repair.setMile(Double.parseDouble(map.get("mile").toString()));
-            String time = map.get("approach_time").toString();
-            Integer month = Integer.parseInt(time.substring(5,7));
-            Integer year = Integer.parseInt(time.substring(0,4));
-            Integer day = Integer.parseInt(time.substring(8,10));
-            Integer hour = Integer.parseInt(time.substring(11,13));
-            Integer minute = Integer.parseInt(time.substring(14,16));
-            Integer second = Integer.parseInt(time.substring(17,19));
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(year, month - 1, day, hour, minute, second);
-            calendar.add(Calendar.HOUR,8);
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String approachTime = format.format(calendar.getTime());
+            repair.setMile((Double) map.get("mile"));
+            String approachTime = ((String) map.get("approach_date"))+" "+((String) map.get("approach_time"));
             repair.setApproachTime(approachTime);
 
             cnt = repairMapper.insertClientRepair(repair);
@@ -147,4 +134,20 @@ public class ClientServiceImpl implements ClientService {
         if(list == null) return Result.create(ResultEnum.UNKNOWN_ERROR,null);
         return Result.create(ResultEnum.SUCCESS, pageInfo);
     }
+
+    @Override
+    public Result updateClient(Client client) {
+        int i = clientMapper.updateClient(client);
+        if(i == 0 ) return Result.create(ResultEnum.UPDATE_ERROR,client);
+        else return Result.create(ResultEnum.UPDATE_SUCCESS,client);
+    }
+
+    @Override
+    public Result showClient(Integer pageNo, Integer pageSize, String keyword) {
+        PageHelper.startPage(pageNo,pageSize);
+        List<Client> clients = clientMapper.showClient(keyword);
+        PageInfo<Client> pageInfo = new PageInfo<>(clients);
+        return Result.create(ResultEnum.QUERY_SUCCESS,pageInfo);
+    }
+
 }

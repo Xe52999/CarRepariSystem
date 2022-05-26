@@ -7,4 +7,7 @@ public interface UserService {
     Result[] inquire(User user);
 
     Result inquireByName(String id);
+    Result showRepairman(Integer pageNo,Integer pageSize,String keyword);
+
+
 }
