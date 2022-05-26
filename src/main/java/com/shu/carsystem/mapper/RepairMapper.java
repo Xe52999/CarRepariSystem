@@ -46,6 +46,7 @@ public interface RepairMapper {
     //业务员 编辑 委托
     int updateRepair(Repair repair);
 
-    //
+    //查询所有等待委托订单的订单号
+    List<Integer> getDispatchedList();
 
 }

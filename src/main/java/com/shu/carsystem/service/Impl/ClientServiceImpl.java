@@ -91,20 +91,36 @@ public class ClientServiceImpl implements ClientService {
             return Result.create(ResultEnum.INSERT_SUCCESS,vehicle);
         }
         else{
+//            String[] mon = {"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
+//            List<String> months = Arrays.asList(mon);
             //请求参数包含粗略故障，说明是新增客户委托
             //判断大致分为：是否存在对应车架号？该车架号是否已登陆过维修？
             String vin =(String) map.get("vin");
-            Integer vehicleId = vehicleMapper.getVidByVin(vin);
+            Integer vehicleId = (vehicleMapper.getVidByVin(vin) == null) ? -1 : (Integer) vehicleMapper.getVidByVin(vin);
+            if(vehicleId == -1) return Result.create(ResultEnum.USER_NOT_EXIST,null);
             if(vehicleMapper.containLicenseOrVin(null, vin) == 0) return Result.create(ResultEnum.USER_NOT_EXIST,null);
             if(repairMapper.getRepairByVehicleId(vehicleId) != null) return  Result.create(ResultEnum.USER_IS_EXISTS,null);
             Repair repair = new Repair();
             repair.setPayment((String) map.get("payment"));
             repair.setVehicleId(vehicleId);
             repair.setFailure((String) map.get("failure"));
-            Double fuel = ((Double) map.get("fuel"))/100;
+            String temp = map.get("fuel").toString();
+            Double fuel = Double.valueOf(temp);
+            fuel /= 10;
             repair.setFuel(Double.parseDouble(String.format("%.2f",fuel).toString()));
-            repair.setMile((Double) map.get("mile"));
-            String approachTime = ((String) map.get("approach_date"))+" "+((String) map.get("approach_time"));
+            repair.setMile(Double.parseDouble(map.get("mile").toString()));
+            String time = map.get("approach_time").toString();
+            Integer month = Integer.parseInt(time.substring(5,7));
+            Integer year = Integer.parseInt(time.substring(0,4));
+            Integer day = Integer.parseInt(time.substring(8,10));
+            Integer hour = Integer.parseInt(time.substring(11,13));
+            Integer minute = Integer.parseInt(time.substring(14,16));
+            Integer second = Integer.parseInt(time.substring(17,19));
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(year, month - 1, day, hour, minute, second);
+            calendar.add(Calendar.HOUR,8);
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String approachTime = format.format(calendar.getTime());
             repair.setApproachTime(approachTime);
 
             cnt = repairMapper.insertClientRepair(repair);
@@ -150,4 +166,11 @@ public class ClientServiceImpl implements ClientService {
         return Result.create(ResultEnum.QUERY_SUCCESS,pageInfo);
     }
 
+
+    @Override
+    public Result queryClientVehicles(Integer clientId) {
+        List<Vehicle> list = vehicleMapper.getListByCId(clientId);
+        if(list == null) Result.create(ResultEnum.UNKNOWN_ERROR, null);
+        return Result.create(ResultEnum.QUERY_SUCCESS, list);
+    }
 }

@@ -78,4 +78,8 @@ public class ClientController {
         return clientService.queryFinishedHistory(clientId, pageNo, pageSize, keyWord);
     }
 
+    @GetMapping("/{clientId}")
+    private Result getClientVehicle(@PathVariable Integer clientId){
+        return clientService.queryClientVehicles(clientId);
+    }
 }

@@ -6,6 +6,8 @@ import com.shu.carsystem.entity.Client;
 import com.shu.carsystem.entity.Repair;
 import com.shu.carsystem.entity.User;
 import com.shu.carsystem.entity.Vehicle;
+import com.shu.carsystem.pojo.ClientIdUser;
+import com.shu.carsystem.service.ClientService;
 import com.shu.carsystem.service.*;
 import com.shu.carsystem.service.Impl.UserServiceImpl;
 import org.apache.ibatis.annotations.Param;
@@ -50,23 +52,18 @@ public class UserController {
         if(result[1].getData().equals("Client")){
             Client client = (Client) result[0].getData();
             List<Vehicle> list = vehicleService.getListByCId(client.getClientId());
-            dataReturn = new Result[list.size() + 2];
+            dataReturn = new Result[((list.size()==0) ? 0 : 1) + 2];
             dataReturn[0] = Result.create(ResultEnum.QUERY_SUCCESS, client);
             dataReturn[1] = Result.create(ResultEnum.QUERY_SUCCESS, "Client");
-            int t = 2;
-            for(Vehicle i : list){
-                dataReturn[t++] = Result.create(ResultEnum.VEHICLE_DATA, i);
-            }
+            if(list.size() != 0) dataReturn[2] = Result.create(ResultEnum.VEHICLE_DATA, list);
         }
         else{
             user = (User) result[0].getData();
-            dataReturn = new Result[1];
-            if(user.getIsRepairman() == 1){
-                /*
-                    未完成：获取对应数据
-                 */
-
-            }
+            ClientIdUser clientIdUser = new ClientIdUser(user);
+            dataReturn = new Result[2];
+            dataReturn[0] = Result.create(ResultEnum.QUERY_SUCCESS, clientIdUser);
+            if(user.getIsRepairman() == 1) dataReturn[1] = Result.create(ResultEnum.QUERY_SUCCESS, "RepairMan");
+            else dataReturn[1] = Result.create(ResultEnum.QUERY_SUCCESS, "User");
         }
 
         return dataReturn;
