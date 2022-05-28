@@ -5,6 +5,7 @@ import com.shu.carsystem.common.ResultEnum;
 import com.shu.carsystem.entity.*;
 import com.shu.carsystem.pojo.ClientIdUser;
 import com.shu.carsystem.pojo.ProjectRepairman;
+import com.shu.carsystem.pojo.RepairmanRecord;
 import com.shu.carsystem.service.ClientService;
 import com.shu.carsystem.service.*;
 import com.shu.carsystem.service.Impl.UserServiceImpl;
@@ -152,6 +153,11 @@ public class UserController {
     @PostMapping("/userSubmit")
     public Result submitMaintain(@RequestBody Map<String, Object> map){
         return userService.addNewMaintain(map);
+    }
+
+    @PutMapping("/affirm")
+    public Result affirmMaintain(@RequestBody Map<String,Object> map){
+        return userService.affirmMaintain(map);
     }
 
 

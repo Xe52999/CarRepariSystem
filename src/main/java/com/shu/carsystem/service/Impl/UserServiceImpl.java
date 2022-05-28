@@ -12,6 +12,7 @@ import com.shu.carsystem.mapper.MaintainMapper;
 import com.shu.carsystem.mapper.RepairMapper;
 import com.shu.carsystem.mapper.UserMapper;
 import com.shu.carsystem.pojo.ProjectRepairman;
+import com.shu.carsystem.pojo.RepairmanRecord;
 import com.shu.carsystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -100,11 +101,14 @@ public class UserServiceImpl implements UserService {
         List<Object> list =(List<Object>) map.get("list");
         if(list.size() == 0 || list == null) return Result.create(ResultEnum.NOT_NULLABLE,null);
         int i = 0;
+        Integer repairId = (Integer) map.get("repairId");
+        Integer userId = (Integer) map.get("userId");
         for(Object object : list){
             try {
                 LinkedHashMap<String,Object> map1 = (LinkedHashMap<String,Object>) object;
-
-                Maintain maintain = new Maintain((Integer) map.get("repairId"),(Integer) map1.get("userId"), (Integer) map1.get("proId"), "待确认", (Integer) map.get("userId"));
+                Integer repairmanId = (Integer) map1.get("userId");
+                Integer proId = (Integer) map1.get("proId");
+                Maintain maintain = new Maintain(repairId,repairmanId, proId, "待确认", userId);
                 maintainMapper.insertMaintain(maintain);
             }catch (Exception e){
                 System.out.println("我异常了");
@@ -113,5 +117,21 @@ public class UserServiceImpl implements UserService {
             }
         }
         return Result.create(ResultEnum.ARRANGE_SUCCESS, null);
+    }
+
+    @Override
+    public Result affirmMaintain(Map<String,Object> map) {
+        RepairmanRecord repairmanRecord = new RepairmanRecord();
+        repairmanRecord.setRepairmanId((Integer) map.get("repairmanId"));
+        repairmanRecord.setFailure((String) map.get("failure"));
+        repairmanRecord.setLicense((String) map.get("license"));
+        repairmanRecord.setPname((String) map.get("pname"));
+        repairmanRecord.setVin((String) map.get("vin"));
+        repairmanRecord.setRepairId((Integer) map.get("repairId"));
+        repairmanRecord.setProId((Integer) map.get("proId"));
+        System.out.println(repairmanRecord);
+        int i = maintainMapper.affirmMaintain(repairmanRecord);
+        if(i == 0) return Result.create(ResultEnum.UPDATE_ERROR,null);
+        return Result.create(ResultEnum.UPDATE_SUCCESS,null);
     }
 }

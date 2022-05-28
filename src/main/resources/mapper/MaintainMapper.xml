@@ -4,7 +4,7 @@
 
     <!-- int insertMaintain(Maintain maintain); -->
     <insert id="insertMaintain">
-        insert into maintain values (#{repairId},#{repairmanId},#{proId},,#{userId})
+        insert into maintain values (#{repairId},#{repairmanId},#{proId},#{isFinished},#{userId})
     </insert>
 
     <resultMap id="NotEnsuredRepairsMap" type="com.shu.carsystem.pojo.NotEnsuredRepair">
@@ -18,13 +18,18 @@
 
     <!-- List<NotEnsuredRepair> getNotEnsuredRepairs(Integer userId, String keyWord); -->
     <select id="getNotEnsuredRepairs" resultMap="NotEnsuredRepairsMap">
-        select * from maintain,project,vehicle,repair
+        select maintain.repair_id,vehicle.license,vehicle.vin,maintain.pro_id,project.pname,repair.failure from maintain,project,vehicle,repair
         <where>
             maintain.repair_id = repair.repair_id and maintain.pro_id = project.pro_id and repair.vehicle_id = vehicle.vehicle_id
             and maintain.repairman_id = #{userId} and maintain.isfinished = '待确认'
-            <if test="keyWord != 'null' or keyWord != ''">
-                and (repair_id like '%${keyword}%' or license like '%${keyword}%' or vin like '%${keyword}%' or pro_id like '%${keyword}%' or pname like '%${keyword}%' or failure like '%${keyword}%');
+            <if test="keyWord != 'null' and keyWord != ''">
+                and (maintain.repair_id like '%${keyWord}%' or vehicle.license like '%${keyWord}%' or vehicle.vin like '%${keyWord}%' or maintain.pro_id like '%${keyWord}%' or project.pname like '%${keyWord}%' or repair.failure like '%${keyWord}%')
             </if>
         </where>
     </select>
+
+    <!-- int affirmMaintain(RepairmanRecord repairmanRecord); -->
+    <update id="affirmMaintain">
+        update maintain set isfinished = '进行中' where repair_id = #{repairmanRecord.repairId} and repairman_id = #{repairmanRecord.repairmanId} and pro_id = #{repairmanRecord.proId}
+    </update>
 </mapper>

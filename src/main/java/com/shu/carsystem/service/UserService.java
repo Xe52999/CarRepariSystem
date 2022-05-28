@@ -5,6 +5,7 @@ import com.shu.carsystem.entity.Maintain;
 import com.shu.carsystem.entity.User;
 
 import com.shu.carsystem.pojo.ProjectRepairman;
+import com.shu.carsystem.pojo.RepairmanRecord;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface UserService {
     Result[] showRepairman(Integer pageNo,Integer pageSize,String keyword);
 
     Result addNewMaintain(Map<String, Object> map);
+
+    Result affirmMaintain(Map<String,Object> map);
 }
