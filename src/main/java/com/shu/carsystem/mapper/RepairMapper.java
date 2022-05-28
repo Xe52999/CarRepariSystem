@@ -49,6 +49,7 @@ public interface RepairMapper {
 
     //
     List<Repair> showAllRepair(@Param("keyword") String keyword);
+
     //查询所有等待委托订单的订单号
     List<Integer> getDispatchedList();
 

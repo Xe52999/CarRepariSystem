@@ -8,9 +8,12 @@ import com.shu.carsystem.common.ResultEnum;
 import com.shu.carsystem.entity.Repair;
 import com.shu.carsystem.entity.User;
 import com.shu.carsystem.entity.Vehicle;
+import com.shu.carsystem.mapper.MaintainMapper;
 import com.shu.carsystem.mapper.RepairMapper;
 import com.shu.carsystem.mapper.UserMapper;
 import com.shu.carsystem.mapper.VehicleMapper;
+import com.shu.carsystem.pojo.NotEnsuredRepair;
+import com.shu.carsystem.pojo.ProjectRepairman;
 import com.shu.carsystem.service.RepairService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +29,9 @@ public class RepairServiceImpl implements RepairService {
     private UserMapper userMapper;
     @Autowired
     private VehicleMapper vehicleMapper;
+
+    @Autowired
+    private MaintainMapper maintainMapper;
 
     @Override
     public List<Repair> getListByUId(Integer id) {
@@ -83,5 +89,13 @@ public class RepairServiceImpl implements RepairService {
         else return Result.create(ResultEnum.UPDATE_SUCCESS,repair);
     }
 
-
+    @Override
+    public Result showNotEnsuredRepairs(Integer userId, Integer pageNo, Integer pageSize, String keyWord) {
+        //获取维修员首页数据，获取维修员需要确认的订单数据
+        PageHelper.startPage(pageNo,pageSize);
+        List<NotEnsuredRepair> repairs = maintainMapper.getNotEnsuredRepairs(userId, keyWord);
+        PageInfo<NotEnsuredRepair> repairPageInfo = new PageInfo<NotEnsuredRepair>(repairs);
+        if (repairs == null) return Result.create(ResultEnum.UNKNOWN_ERROR,null);
+        return Result.create(ResultEnum.SUCCESS, repairPageInfo);
+    }
 }

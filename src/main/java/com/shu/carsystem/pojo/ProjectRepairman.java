@@ -16,4 +16,6 @@ public class ProjectRepairman {
     private String phone;
     private String job;
     private String statu = "空闲中";
+    private Integer repairId;
+    private String realname;
 }

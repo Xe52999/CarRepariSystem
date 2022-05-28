@@ -5,15 +5,22 @@ import com.github.pagehelper.PageInfo;
 import com.shu.carsystem.common.Result;
 import com.shu.carsystem.common.ResultEnum;
 import com.shu.carsystem.entity.Client;
+import com.shu.carsystem.entity.Maintain;
 import com.shu.carsystem.entity.User;
 import com.shu.carsystem.mapper.ClientMapper;
+import com.shu.carsystem.mapper.MaintainMapper;
+import com.shu.carsystem.mapper.RepairMapper;
 import com.shu.carsystem.mapper.UserMapper;
 import com.shu.carsystem.pojo.ProjectRepairman;
 import com.shu.carsystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -22,6 +29,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private ClientMapper clientMapper;
+
+    @Autowired
+    private RepairMapper repairMapper;
+
+    @Autowired
+    private MaintainMapper maintainMapper;
 
 
     //查询任意一位用户数据信息（思路：分别在Client和User表中查询）
@@ -65,11 +78,40 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Result showRepairman(Integer pageNo,Integer pageSize,String keyword) {
+    public Result[] showRepairman(Integer pageNo,Integer pageSize,String keyword) {
+        // 查询所有的维修员，并且返回所有的订单号
+        Result[] res = new Result[2];
         PageHelper.startPage(pageNo,pageSize);
         List<ProjectRepairman> projectRepairmen = userMapper.showRepairman(keyword);
         PageInfo<ProjectRepairman> pageInfo = new PageInfo<>(projectRepairmen);
-        return Result.create(ResultEnum.QUERY_SUCCESS,pageInfo);
+        List<Integer> repairIdList = repairMapper.getDispatchedList();
+        if(projectRepairmen == null) res[0] = Result.create(ResultEnum.UNKNOWN_ERROR, null);
+        res[0] = Result.create(ResultEnum.QUERY_SUCCESS, pageInfo);
+        if(repairIdList == null) res[1] = Result.create(ResultEnum.UNKNOWN_ERROR, null);
+        res[1] = Result.create(ResultEnum.QUERY_SUCCESS, repairIdList);
+        return res;
     }
 
+    @Transactional
+    @Override
+    public Result addNewMaintain(Map<String, Object> map) {
+        //将新获取到的maintain记录插入maintain表中，获取的参数为一个数组。其中存放的是维修人员id、委托员id、委托单id以及维修项目id
+        // 需要注意的是将新纪录插入后，需要修改：维修员的状态、将委托的状态移至等待维修
+        List<Object> list =(List<Object>) map.get("list");
+        if(list.size() == 0 || list == null) return Result.create(ResultEnum.NOT_NULLABLE,null);
+        int i = 0;
+        for(Object object : list){
+            try {
+                LinkedHashMap<String,Object> map1 = (LinkedHashMap<String,Object>) object;
+
+                Maintain maintain = new Maintain((Integer) map.get("repairId"),(Integer) map1.get("userId"), (Integer) map1.get("proId"), "待确认", (Integer) map.get("userId"));
+                maintainMapper.insertMaintain(maintain);
+            }catch (Exception e){
+                System.out.println("我异常了");
+                System.out.println(e.toString());
+                return Result.create(ResultEnum.ARRANGE_FAILURE,null);
+            }
+        }
+        return Result.create(ResultEnum.ARRANGE_SUCCESS, null);
+    }
 }

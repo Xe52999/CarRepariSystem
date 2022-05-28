@@ -10,6 +10,7 @@ public enum ResultEnum {
     USER_NOT_LOGIN(4,"用户未登录"),
     BAD_FORMAT(5,"格式错误"),
     Vehicle_NOT_EXISTS(6,"车辆不存在"),
+    NOT_NULLABLE(7,"数据不可非空"),
     SUCCESS(200,"成功"),
     INSERT_ERROR(444,"插入失败"),
     INSERT_SUCCESS(454,"插入成功"),
@@ -21,7 +22,10 @@ public enum ResultEnum {
     VEHICLE_DATA(500,"车辆数据传输"),
     REPAIR_DATA(501,"维修信息传输"),
     USER_DATA(502,"用户信息传输"),
-    CLIENT_DATA(503,"客户信息传输");
+    CLIENT_DATA(503,"客户信息传输"),
+    ARRANGE_FAILURE(504,"派工失败"),
+    ARRANGE_SUCCESS(505,"派工成功");
+
 
 
 

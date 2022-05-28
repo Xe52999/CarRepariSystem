@@ -153,7 +153,8 @@
     <select id="getDispatchedList" resultType="Integer">
         select repair_id from repair
         <where>
-            statu = '等待派单';
+            statu = '等待派单'
         </where>
+        ORDER BY repair_id ASC;
     </select>
 </mapper>

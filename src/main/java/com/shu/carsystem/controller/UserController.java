@@ -2,11 +2,9 @@ package com.shu.carsystem.controller;
 
 import com.shu.carsystem.common.Result;
 import com.shu.carsystem.common.ResultEnum;
-import com.shu.carsystem.entity.Client;
-import com.shu.carsystem.entity.Repair;
-import com.shu.carsystem.entity.User;
-import com.shu.carsystem.entity.Vehicle;
+import com.shu.carsystem.entity.*;
 import com.shu.carsystem.pojo.ClientIdUser;
+import com.shu.carsystem.pojo.ProjectRepairman;
 import com.shu.carsystem.service.ClientService;
 import com.shu.carsystem.service.*;
 import com.shu.carsystem.service.Impl.UserServiceImpl;
@@ -19,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -114,7 +113,7 @@ public class UserController {
     }
 
     @GetMapping("/show/repairman/{pageNo}/{pageSize}/{keyword}")
-    public Result showRepairman(@PathVariable("pageNo") Integer pageNo,
+    public Result[] showRepairman(@PathVariable("pageNo") Integer pageNo,
                                 @PathVariable("pageSize") Integer pageSize,
                                 @PathVariable("keyword") String keyword){
         return userService.showRepairman(pageNo,pageSize,keyword);
@@ -140,5 +139,21 @@ public class UserController {
 
         return repairService.showAllRepair(pageNo,pageSize,keyword);
     }
+
+    @GetMapping("/repairman/{userId}/{pageNo}/{pageSize}/{keyWord}")
+    public Result getRepairmanPageInfo(@PathVariable Integer userId,
+                                         @PathVariable Integer pageNo,
+                                         @PathVariable Integer pageSize,
+                                         @PathVariable String keyWord)
+    {
+        return repairService.showNotEnsuredRepairs(userId,pageNo,pageSize,keyWord);
+    }
+
+    @PostMapping("/userSubmit")
+    public Result submitMaintain(@RequestBody Map<String, Object> map){
+        return userService.addNewMaintain(map);
+    }
+
+
 
 }

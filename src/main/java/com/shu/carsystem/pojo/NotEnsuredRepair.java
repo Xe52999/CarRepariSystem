@@ -1,4 +1,4 @@
-package com.shu.carsystem.entity;
+package com.shu.carsystem.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,10 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Maintain {
+public class NotEnsuredRepair {
     private Integer repairId;
-    private Integer repairmanId;
+    private String license;
+    private String vin;
     private Integer proId;
-    private String isFinished = "待确认";
-    private Integer userId;
+    private String pname;
+    private String failure;
 }

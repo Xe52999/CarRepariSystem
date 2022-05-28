@@ -18,6 +18,7 @@ public class User {
     private String phone;
     private Integer isRepairman;
     private String job;
+    private String realname;
     private String statu = "空闲中";
 
     public User(Integer userId, String password) {

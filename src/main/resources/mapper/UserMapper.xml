@@ -10,6 +10,7 @@
         <result property="isAdmin" column="is_admin"></result>
         <result property="isRepairman" column="is_repairman"></result>
         <result property="job" column="job"></result>
+        <result property="realname" column="realname"></result>
 <!--        <result property="status" column="status"></result>-->
     </resultMap>
     <resultMap id="ProjectRepairmanMap" type="com.shu.carsystem.pojo.ProjectRepairman">
@@ -20,6 +21,7 @@
         <result property="name" column="name"></result>
         <result property="phone" column="phone"></result>
         <result property="job" column="job"></result>
+        <result property="realname" column="realname"></result>
 <!--        <result property="status" column="status"></result>-->
     </resultMap>
     <!-- User inquireUser(User user); -->
@@ -46,12 +48,12 @@
 
     <!--    List<ProjectRepairman> showRepairman();-->
     <select id="showRepairman" resultMap="ProjectRepairmanMap">
-        select project.pro_id,project.pname,project.hour,"user".user_id,"user".name,"user".phone,"user".job
+        select project.pro_id,project.pname,project.hour,"user".user_id,"user".name,"user".phone,"user".job,"user".realname
         from project,"user"
         <where>
-            "user".is_repairman=1 and project.pjob="user".job
+            "user".is_repairman=1 and project.pjob="user".job and "user".statu = '空闲中'
             <if test="keyword != '' and keyword !='null'">
-                and (pro_id like '%${keyword}%' or pname like '%${keyword}%' or hour like '%${keyword}%' or   user_id like '%${keyword}%' or phone like '%${keyword}%' or job like '%${keyword}%' )
+                and (pro_id like '%${keyword}%' or pname like '%${keyword}%' or hour like '%${keyword}%' or user_id like '%${keyword}%' or phone like '%${keyword}%' or job like '%${keyword}%' or realname like '%${keyword}%' or statu like '%${keyword}%')
             </if>
         </where>
     </select>

@@ -16,6 +16,7 @@ public interface UserMapper {
 
     User inqurieUserByUserId(@Param("UserId") Integer userId);
 
-    //显示所有的 空闲的维修工
+    //显示所有的空闲的维修工
     List<ProjectRepairman> showRepairman(@Param("keyword") String keyword);
+
 }

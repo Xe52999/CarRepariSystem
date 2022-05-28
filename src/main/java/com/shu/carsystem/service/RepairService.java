@@ -24,4 +24,6 @@ public interface RepairService {
 
     Result updateRepair(Repair repair,Integer userId);
 
+    Result showNotEnsuredRepairs(Integer userId,Integer pageNo,Integer pageSize,String keyWord);
+
 }
