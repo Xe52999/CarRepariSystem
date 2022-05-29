@@ -134,4 +134,15 @@ public class UserServiceImpl implements UserService {
         if(i == 0) return Result.create(ResultEnum.UPDATE_ERROR,null);
         return Result.create(ResultEnum.UPDATE_SUCCESS,null);
     }
+
+    @Override
+    public Result finishMaintain(Map<String, Object> map) {
+        Integer repairId = (Integer) map.get("repairId");
+        Integer repairmanId = (Integer) map.get("repairmanId");
+        Integer proId = (Integer) map.get("proId");
+        int i = maintainMapper.finishMaintain(repairId,repairmanId,proId);
+        System.out.println(i);
+        if(i == 0) return Result.create(ResultEnum.UNKNOWN_ERROR, null);
+        return Result.create(ResultEnum.UPDATE_SUCCESS,null);
+    }
 }

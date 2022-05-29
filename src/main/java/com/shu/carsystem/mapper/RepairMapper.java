@@ -3,6 +3,8 @@ package com.shu.carsystem.mapper;
 import com.shu.carsystem.entity.Repair;
 import com.shu.carsystem.entity.Vehicle;
 import com.shu.carsystem.pojo.ClientRecord;
+import com.shu.carsystem.pojo.RepairInfo;
+import com.shu.carsystem.pojo.RepairVehicle;
 import lombok.NoArgsConstructor;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -48,9 +50,10 @@ public interface RepairMapper {
     int updateRepair(Repair repair);
 
     //
-    List<Repair> showAllRepair(@Param("keyword") String keyword);
+    List<RepairVehicle> showAllRepair(@Param("keyword") String keyword);
 
     //查询所有等待委托订单的订单号
     List<Integer> getDispatchedList();
 
+    RepairInfo getRepairInfoByVin(String vin,String failure);
 }

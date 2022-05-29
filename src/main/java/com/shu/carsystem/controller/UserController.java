@@ -36,6 +36,9 @@ public class UserController {
     @Autowired
     private ClientService clientService;
 
+    @Autowired
+    private MaterialService materialService;
+
     @GetMapping("/login/{username}/{password}")
     private Result[] userLogin(@PathVariable("username") String username, @PathVariable("password") String password, HttpSession httpSession)
     {
@@ -141,7 +144,7 @@ public class UserController {
         return repairService.showAllRepair(pageNo,pageSize,keyword);
     }
 
-    @GetMapping("/repairman/{userId}/{pageNo}/{pageSize}/{keyWord}")
+    @GetMapping("/repairman/notEnsured/{userId}/{pageNo}/{pageSize}/{keyWord}")
     public Result getRepairmanPageInfo(@PathVariable Integer userId,
                                          @PathVariable Integer pageNo,
                                          @PathVariable Integer pageSize,
@@ -155,11 +158,46 @@ public class UserController {
         return userService.addNewMaintain(map);
     }
 
-    @PutMapping("/affirm")
+    @PutMapping("/repairman/affirm")
     public Result affirmMaintain(@RequestBody Map<String,Object> map){
         return userService.affirmMaintain(map);
     }
 
+    @GetMapping("/repairman/ongoing/{userId}/{pageNo}/{pageSize}")
+    public Result[] getRepairmanOngoingPageInfo(@PathVariable Integer userId,
+                                       @PathVariable Integer pageNo,
+                                       @PathVariable Integer pageSize)
+    {
+        return repairService.showOngoingRepairs(userId,pageNo,pageSize);
+    }
 
+    @GetMapping("/repairman/ongoing/getMaterial/{matId}")
+    public Result queryMaterialName(@PathVariable("matId") Integer matId){
+        return repairService.queryMaterialName(matId);
+    }
+
+    @GetMapping("/repairman/ongoing/getMaterial")
+    public Result queryMaterialName(){
+        return repairService.queryMaterialName();
+    }
+
+    @PostMapping("/repairman/ongoing/addMaterial")
+    public Result addMaterial(@RequestBody Map<String, Object> map){
+        return materialService.addMaterial(map);
+    }
+
+    @PostMapping("/repairman/ongoing/finishMaintain")
+    public Result finishMaintain(@RequestBody Map<String,Object> map){ return userService.finishMaintain(map); }
+
+    @GetMapping("/repairman/finished/{userId}/{pageNo}/{pageSize}/{keyWord}")
+    public Result queryFinishedMaintain(@PathVariable("userId") Integer userId,
+                                        @PathVariable("pageNo") Integer pageNo,
+                                        @PathVariable("pageSize") Integer pageSize,
+                                        @PathVariable("keyWord") String keyWord){
+        return repairService.queryFinishedMaintain(userId,pageNo,pageSize,keyWord);
+    }
+
+    @GetMapping("/getAttorney/{vin}/{failure}")
+    public Result[] getAttorney(@PathVariable("vin") String vin, @PathVariable("failure") String failure) {return repairService.getAttorney(vin, failure);}
 
 }

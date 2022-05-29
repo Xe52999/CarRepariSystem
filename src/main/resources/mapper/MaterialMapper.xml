@@ -10,6 +10,21 @@
         insert into material values (#{matId},#{name},#{cost})
     </insert>
 
+    <!-- List<String> queryMaterialNameList(Integer matId); -->
+    <select id="queryMaterialNameList" resultType="String" >
+        select material.name from material
+        <if test="matId != null">
+            <where>
+                mat_id = #{matId};
+            </where>
+        </if>
+    </select>
 
-
+    <!-- Integer getMatIdByName(String name); -->
+    <select id="getMatIdByName" resultType="Integer">
+        select mat_Id from material
+        <where>
+            name = #{name};
+        </where>
+    </select>
 </mapper>

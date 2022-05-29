@@ -29,6 +29,25 @@
         <result property="statu" column="statu"></result>
     </resultMap>
 
+    <resultMap id="RepairVehicleMap1" type="com.shu.carsystem.pojo.RepairVehicle">
+        <id property="repairId" column="repair_id"></id>
+        <result property="license" column="license"></result>
+        <result property="vin" column="vin"></result>
+        <result property="category" column="class"></result>
+        <result property="failure" column="failure"></result>
+        <result property="statu" column="statu"></result>
+        <result property="type" column="type"></result>
+        <result property="classification" column="classification"></result>
+        <result property="payment" column="payment"></result>
+        <result property="mile" column="mile"></result>
+        <result property="fuel" column="fuel"></result>
+        <result property="approachTime" column="approach_time"></result>
+        <result property="ddl" column="ddl"></result>
+        <result property="cost" column="cost"></result>
+        <result property="userId" column="user_id"></result>
+        <result property="vehicleId" column="vehicle_id"></result>
+    </resultMap>
+
     <!-- List<Repair> getListByUId(Integer id); -->
     <select id="getListByUID" resultMap="RepairMap">
         select * from "repair"
@@ -137,14 +156,14 @@
         where repair_id=#{repairId};
     </update>
 
-    <!--    List<Repair> showAllRepair(@Param("keyword") String keyword);-->
-    <select id="showAllRepair" resultMap="RepairVehicleMap">
-        select repair.repair_id ,vehicle.license,vehicle.vin,vehicle.class,repair.failure,repair.statu
+    <!--    List<RepairVehicle> showAllRepair(@Param("keyword") String keyword);-->
+    <select id="showAllRepair" resultMap="RepairVehicleMap1">
+        select *
         from repair ,vehicle
         <where>
             repair.vehicle_id=vehicle.vehicle_id
             <if test="keyword != '' and keyword !='null'">
-                and (repair_id like '%${keyword}%' or license like '%${keyword}%' or vin like '%${keyword}%' or   class like '%${keyword}%' or failure like '%${keyword}%' or statu  like '%${keyword}%')
+                and (repair_id like '%${keyword}%' or license like '%${keyword}%' or vin like '%${keyword}%' or  class like '%${keyword}%' or failure like '%${keyword}%' or statu  like '%${keyword}%')
             </if>
         </where>
     </select>
@@ -156,5 +175,34 @@
             statu = '等待派单'
         </where>
         ORDER BY repair_id ASC;
+    </select>
+
+    <!-- RepairInfo getRepairInfoByVin(String vin, String failure); -->
+    <resultMap id="RepairInfo" type="com.shu.carsystem.pojo.RepairInfo">
+        <result column="repair_id" property="repairId"></result>
+        <result column="license" property="license"></result>
+        <result column="client_id" property="clientId"></result>
+        <result column="" property="repairType"></result>
+        <result column="classification" property="repairClassification"></result>
+        <result column="payment" property="payment"></result>
+        <result column="vin" property="vin"></result>
+        <result column="mile" property="mile"></result>
+        <result column="fuel" property="fuel"></result>
+        <result column="approach_time" property="approachTime"></result>
+        <result column="realname" property="realname"></result>
+        <result column="user_id" property="userId"></result>
+        <result column="ddl" property="ddl"></result>
+        <result column="failure" property="failure"></result>
+        <result column="discount" property="discount"></result>
+        <result column="hour" property="hour"></result>
+        <result column="cost" property="cost"></result>
+    </resultMap>
+    <select id="getRepairInfoByVin" resultMap="RepairInfo">
+        select repair.repair_id,license,client.client_id,repair.type,repair.classification,payment,vin,mile,fuel,approach_time,realname,"user".user_id,repair.ddl,failure,discount,repair.hour,repair.cost
+               from repair,client,vehicle,"user"
+        <where>
+            repair.vehicle_id = vehicle.vehicle_id and "user".user_id = repair.user_id and vehicle.client_id = client.client_id
+            and vin = #{vin} and failure = #{failure};
+        </where>
     </select>
 </mapper>

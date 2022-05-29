@@ -1,17 +1,19 @@
-package com.shu.carsystem.entity;
+package com.shu.carsystem.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-public class Project {
+public class MaintainInfo1 {
     private Integer proId;
     private String pname;
     private float hour;
-    private String pjob;
+    private String name;
+    private Integer number;
+    private float cost;
 }

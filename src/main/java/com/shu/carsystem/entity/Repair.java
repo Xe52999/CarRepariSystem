@@ -21,10 +21,10 @@ public class Repair {
     private String approachTime;
     private String failure;
     private String ddl;
-    private Integer cost;
+    private float cost = 0;
     private Integer userId;
     private Integer vehicleId;
-    private Double hour;
+    private float hour = 0;
 //    private Integer maintainerId;
     private String statu = "等待派单";
 }

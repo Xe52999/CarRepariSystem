@@ -21,4 +21,7 @@ public interface UserService {
     Result addNewMaintain(Map<String, Object> map);
 
     Result affirmMaintain(Map<String,Object> map);
+
+    Result finishMaintain(Map<String,Object> map);
+
 }

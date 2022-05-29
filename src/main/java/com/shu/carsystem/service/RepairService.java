@@ -26,4 +26,15 @@ public interface RepairService {
 
     Result showNotEnsuredRepairs(Integer userId,Integer pageNo,Integer pageSize,String keyWord);
 
+    Result[] showOngoingRepairs(Integer userId,Integer pageNo,Integer pageSize);
+
+    Result queryFinishedMaintain(Integer userId,Integer pageNo,Integer pageSize,String keyWord);
+
+    Result queryMaterialName(Integer matId);
+
+    Result queryMaterialName();
+
+    Result[] getAttorney(String vin, String failure);
+
+
 }

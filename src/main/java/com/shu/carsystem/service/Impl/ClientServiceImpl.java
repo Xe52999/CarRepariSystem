@@ -99,7 +99,6 @@ public class ClientServiceImpl implements ClientService {
             Integer vehicleId = (vehicleMapper.getVidByVin(vin) == null) ? -1 : (Integer) vehicleMapper.getVidByVin(vin);
             if(vehicleId == -1) return Result.create(ResultEnum.USER_NOT_EXIST,null);
             if(vehicleMapper.containLicenseOrVin(null, vin) == 0) return Result.create(ResultEnum.USER_NOT_EXIST,null);
-            if(repairMapper.getRepairByVehicleId(vehicleId) != null) return  Result.create(ResultEnum.USER_IS_EXISTS,null);
             Repair repair = new Repair();
             repair.setPayment((String) map.get("payment"));
             repair.setVehicleId(vehicleId);
